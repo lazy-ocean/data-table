@@ -1,4 +1,5 @@
 const axios = require("axios").default;
+const _ = require("lodash");
 
 export const getRows = (): Promise<any> => {
   const promise = axios.get(
@@ -31,6 +32,7 @@ export const getColumns = (): Promise<any> => {
         field: key,
         headerName: label,
         sortable: true,
+        id: _.uniqueId(),
       };
       acc.push(data);
       return acc;
