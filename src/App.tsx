@@ -1,8 +1,14 @@
 import "./App.css";
 import { getRows, getColumns } from "./data";
+import {
+  StyledTableCell,
+  StyledTableRow,
+  StyledRedCell,
+  StyledYellowCell,
+} from "./styled";
 
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -68,24 +74,12 @@ const App = () => {
       width: 1,
     },
   }));
-
+  const classes = useStyles();
   const handleRequestSort = (field: string) => {
     const isAsc = orderBy === field && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(field);
   };
-
-  /*function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-  
-  */
 
   function stableSort(array: any[]): any[] {
     // @ts-ignore
@@ -97,59 +91,74 @@ const App = () => {
 
   let colsNames = columns.map((col) => col.field);
   return (
-    <>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  inputProps={{ "aria-label": "select all desserts" }}
-                />
-              </TableCell>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  id={column.id}
-                  width={column.width}
-                  sortDirection={orderBy === column.id ? order : false}
-                >
-                  <TableSortLabel
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <TableContainer component={Paper}>
+          <Table
+            aria-label="simple table"
+            className={classes.table}
+            size={"small"}
+          >
+            <TableHead>
+              <TableRow>
+                <StyledTableCell padding="checkbox">
+                  <Checkbox
+                    inputProps={{ "aria-label": "select all desserts" }}
+                  />
+                </StyledTableCell>
+                {columns.map((column) => (
+                  <StyledTableCell
+                    key={column.id}
                     id={column.id}
-                    active={orderBy === column.id}
-                    direction={orderBy === column.id ? order : "asc"}
-                    onClick={() => handleRequestSort(column.field)}
+                    width={column.width}
+                    sortDirection={orderBy === column.id ? order : false}
                   >
-                    {column.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {stableSort(rows)
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell padding="checkbox">
-                    <Checkbox />
-                  </TableCell>
-                  {colsNames.map((field) => (
-                    <TableCell>{row[field]}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-      />
-    </>
+                    <TableSortLabel
+                      id={column.id}
+                      active={orderBy === column.id}
+                      direction={orderBy === column.id ? order : "asc"}
+                      onClick={() => handleRequestSort(column.field)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {stableSort(rows)
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <StyledTableRow key={row.id}>
+                    <TableCell padding="checkbox">
+                      <Checkbox />
+                    </TableCell>
+                    {colsNames.map((field) => {
+                      if (field === "VALUE_1" && row[field] > 2000) {
+                        console.log(row[field]);
+                        return row[field] < 3000 ? (
+                          <StyledYellowCell>{row[field]}</StyledYellowCell>
+                        ) : (
+                          <StyledRedCell>{row[field]}</StyledRedCell>
+                        );
+                      } else {
+                        return <TableCell>{row[field]}</TableCell>;
+                      }
+                    })}
+                  </StyledTableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+        />
+      </Paper>
+    </div>
   );
 };
 export default App;
