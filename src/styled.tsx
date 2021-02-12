@@ -1,6 +1,7 @@
 import { withStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 export const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -34,3 +35,17 @@ export const StyledRedCell = withStyles((theme) => ({
     backgroundColor: "#F50049",
   },
 }))(TableCell);
+
+export const StyledTableSortLabel = withStyles((theme) => ({
+  root: {
+    "&:hover, &:focus": {
+      color: "white",
+    },
+    "&.MuiTableSortLabel-active": {
+      color: "white",
+    },
+  },
+  icon: {
+    color: "inherit !important",
+  },
+}))(TableSortLabel);

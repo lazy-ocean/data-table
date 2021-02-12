@@ -5,6 +5,7 @@ import {
   StyledTableRow,
   StyledRedCell,
   StyledYellowCell,
+  StyledTableSortLabel,
 } from "./styled";
 
 import React, { useEffect, useState } from "react";
@@ -101,7 +102,7 @@ const App = () => {
   const classes = useStyles();
   const handleRequestSort = (field: string) => {
     const isAsc = orderBy === field && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    setOrder(order === "asc" ? "desc" : "asc");
     setOrderBy(field);
   };
 
@@ -138,16 +139,16 @@ const App = () => {
                     key={column.id}
                     id={column.id}
                     width={column.width}
-                    sortDirection={orderBy === column.id ? order : false}
+                    sortDirection={orderBy === column.field ? order : false}
                   >
-                    <TableSortLabel
+                    <StyledTableSortLabel
                       id={column.id}
-                      active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : "asc"}
+                      active={orderBy === column.field}
+                      direction={orderBy === column.field ? order : "asc"}
                       onClick={() => handleRequestSort(column.field)}
                     >
                       {column.label}
-                    </TableSortLabel>
+                    </StyledTableSortLabel>
                   </StyledTableCell>
                 ))}
               </TableRow>
