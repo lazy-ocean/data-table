@@ -17,6 +17,9 @@ export const StyledTableRow = withStyles((theme) => ({
     "&:nth-of-type(even)": {
       backgroundColor: "#D8EEFD",
     },
+    "&.Mui-selected, &.Mui-selected:hover": {
+      backgroundColor: "#BADCF3",
+    },
   },
 }))(TableRow);
 

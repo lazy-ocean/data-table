@@ -30,6 +30,8 @@ const App = () => {
   let [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
   const [orderBy, setOrderBy] = React.useState("#");
+  const [selected, setSelected] = React.useState<string[]>([]);
+  const [checkedAll, checkAll] = React.useState<boolean>(false);
 
   useEffect(() => {
     const colsData = async () => {
@@ -43,6 +45,28 @@ const App = () => {
     colsData();
     rowsData();
   }, []);
+
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
+
+  const handleSelectAllClick = () => {
+    if (!checkedAll) {
+      const newSelected = rows.map((n) => n.id);
+      checkAll(true);
+      setSelected(newSelected);
+    } else {
+      checkAll(false);
+      setSelected([]);
+    }
+  };
+
+  const handleSelect = (id: string) => {
+    if (selected.includes(id)) {
+      let filtered = selected.filter((item) => item !== id);
+      setSelected(filtered);
+    } else {
+      setSelected([...selected, id]);
+    }
+  };
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
@@ -103,7 +127,10 @@ const App = () => {
               <TableRow>
                 <StyledTableCell padding="checkbox">
                   <Checkbox
-                    inputProps={{ "aria-label": "select all desserts" }}
+                    inputProps={{ "aria-label": "select all" }}
+                    style={{ color: "white" }}
+                    checked={checkedAll}
+                    onClick={() => handleSelectAllClick()}
                   />
                 </StyledTableCell>
                 {columns.map((column) => (
@@ -128,35 +155,51 @@ const App = () => {
             <TableBody>
               {stableSort(rows)
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <TableCell padding="checkbox">
-                      <Checkbox />
-                    </TableCell>
-                    {colsNames.map((field) => {
-                      if (field === "VALUE_1" && row[field] > 2000) {
-                        console.log(row[field]);
-                        return row[field] < 3000 ? (
-                          <StyledYellowCell>{row[field]}</StyledYellowCell>
-                        ) : (
-                          <StyledRedCell>{row[field]}</StyledRedCell>
-                        );
-                      } else {
-                        return <TableCell>{row[field]}</TableCell>;
-                      }
-                    })}
-                  </StyledTableRow>
-                ))}
+                .map((row) => {
+                  const isItemSelected = isSelected(row.id);
+                  return (
+                    <StyledTableRow key={row.id} selected={isItemSelected}>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          style={{ color: "#5AA9E6" }}
+                          checked={isItemSelected}
+                          onClick={() => handleSelect(row.id)}
+                        />
+                      </TableCell>
+                      {colsNames.map((field) => {
+                        if (field === "VALUE_1" && row[field] > 2000) {
+                          return row[field] < 3000 ? (
+                            <StyledYellowCell>{row[field]}</StyledYellowCell>
+                          ) : (
+                            <StyledRedCell>{row[field]}</StyledRedCell>
+                          );
+                        } else {
+                          return <TableCell>{row[field]}</TableCell>;
+                        }
+                      })}
+                    </StyledTableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-        />
+        <TableRow style={{ display: "flex", justifyContent: "space-between" }}>
+          {selected.length ? (
+            <TableCell align="right">
+              {selected.length === 1
+                ? `1 item selected`
+                : `${selected.length} items selected`}
+            </TableCell>
+          ) : null}
+          <TablePagination
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            style={{ flexGrow: 1 }}
+          />
+        </TableRow>
       </Paper>
     </div>
   );
