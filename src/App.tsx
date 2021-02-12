@@ -6,10 +6,11 @@ import {
   StyledRedCell,
   StyledYellowCell,
   StyledTableSortLabel,
+  useStyles,
 } from "./styled";
 
 import React, { useEffect, useState } from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -19,8 +20,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-const _ = require("lodash");
 
 const App = () => {
   let Order: "asc" | "desc";
@@ -76,29 +75,6 @@ const App = () => {
     setPage(page);
   };
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "100%",
-    },
-    paper: {
-      width: "100%",
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: "rect(0 0 0 0)",
-      height: 1,
-      margin: -1,
-      overflow: "hidden",
-      padding: 0,
-      position: "absolute",
-      top: 20,
-      width: 1,
-    },
-  }));
   const classes = useStyles();
   const handleRequestSort = (field: string) => {
     const isAsc = orderBy === field && order === "asc";
@@ -123,6 +99,7 @@ const App = () => {
             aria-label="simple table"
             className={classes.table}
             size={"small"}
+            style={{ fontSize: "10px" }}
           >
             <TableHead>
               <TableRow>
