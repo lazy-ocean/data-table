@@ -20,6 +20,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
+const _ = require("lodash");
 
 const App = () => {
   let Order: "asc" | "desc";
@@ -27,7 +28,7 @@ const App = () => {
   let [rows, setRowsData] = useState<any[]>([]);
   let [columns, setColumnsData] = useState<any[]>([]);
   let [page, setPage] = React.useState(0);
-  let [rowsPerPage, setRowsPerPage] = React.useState(10);
+  let [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
   const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -73,6 +74,12 @@ const App = () => {
     page: number
   ) => {
     setPage(page);
+  };
+
+  const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newRows = e.target.value;
+    setRowsPerPage(parseInt(newRows));
+    setPage(0);
   };
 
   const classes = useStyles();
@@ -138,7 +145,7 @@ const App = () => {
                   const isItemSelected = isSelected(row.id);
                   return (
                     <StyledTableRow key={row.id} selected={isItemSelected}>
-                      <TableCell padding="checkbox">
+                      <TableCell key={row.id} padding="checkbox">
                         <Checkbox
                           style={{ color: "#5AA9E6" }}
                           checked={isItemSelected}
@@ -148,12 +155,20 @@ const App = () => {
                       {colsNames.map((field) => {
                         if (field === "VALUE_1" && row[field] > 2000) {
                           return row[field] < 3000 ? (
-                            <StyledYellowCell>{row[field]}</StyledYellowCell>
+                            <StyledYellowCell key={_.uniqueId()}>
+                              {row[field]}
+                            </StyledYellowCell>
                           ) : (
-                            <StyledRedCell>{row[field]}</StyledRedCell>
+                            <StyledRedCell key={_.uniqueId()}>
+                              {row[field]}
+                            </StyledRedCell>
                           );
                         } else {
-                          return <TableCell>{row[field]}</TableCell>;
+                          return (
+                            <TableCell key={_.uniqueId()}>
+                              {row[field]}
+                            </TableCell>
+                          );
                         }
                       })}
                     </StyledTableRow>
@@ -171,9 +186,9 @@ const App = () => {
             </TableCell>
           ) : null}
           <TablePagination
-            component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
             page={page}
             onChangePage={handleChangePage}
             style={{ flexGrow: 1 }}
