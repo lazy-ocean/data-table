@@ -163,6 +163,16 @@ const App = () => {
                               {row[field]}
                             </StyledRedCell>
                           );
+                        } else if (field === "UPDATE_TIMESTAMP") {
+                          let str = row[field].slice(0, -7);
+                          let date = new Date(str);
+                          return (
+                            <TableCell key={_.uniqueId()}>
+                              {`${date.toLocaleDateString()} ${date.toLocaleTimeString(
+                                "en-US"
+                              )}`}
+                            </TableCell>
+                          );
                         } else {
                           return (
                             <TableCell key={_.uniqueId()}>
