@@ -29,7 +29,7 @@ const App = () => {
   let [page, setPage] = React.useState(0);
   let [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
-  const [orderBy, setOrderBy] = React.useState("#");
+  const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
 
@@ -77,7 +77,6 @@ const App = () => {
 
   const classes = useStyles();
   const handleRequestSort = (field: string) => {
-    const isAsc = orderBy === field && order === "asc";
     setOrder(order === "asc" ? "desc" : "asc");
     setOrderBy(field);
   };
@@ -85,7 +84,9 @@ const App = () => {
   function stableSort(array: any[]): any[] {
     // @ts-ignore
     let sorted = _.sortBy(array, function (obj) {
-      return obj[orderBy];
+      return typeof obj[orderBy] === "string"
+        ? obj[orderBy].toLowerCase()
+        : obj[orderBy];
     });
     return order === "asc" ? sorted : sorted.reverse();
   }
