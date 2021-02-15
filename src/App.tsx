@@ -7,7 +7,9 @@ import {
   StyledYellowCell,
   StyledTableSortLabel,
   useStyles,
+  StyledEditButton,
 } from "./styled";
+import { EditedRow } from "./editedRow";
 
 import React, { useEffect, useState } from "react";
 
@@ -19,6 +21,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 import TablePagination from "@material-ui/core/TablePagination";
 const _ = require("lodash");
 
@@ -33,6 +36,9 @@ const App = () => {
   const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
+  const [edited, setEdited] = React.useState<string | false>(
+    "5ee3acd9807b3b1dd49f5725"
+  );
 
   useEffect(() => {
     const colsData = async () => {
@@ -99,6 +105,7 @@ const App = () => {
   }
 
   let colsNames = columns.map((col) => col.field);
+  let clients = rows.map((row) => row["CLIENT_NM"]);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -136,6 +143,7 @@ const App = () => {
                     </StyledTableSortLabel>
                   </StyledTableCell>
                 ))}
+                <StyledTableCell padding="checkbox"></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -143,9 +151,9 @@ const App = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   const isItemSelected = isSelected(row.id);
-                  return (
+                  return edited !== row.id ? (
                     <StyledTableRow key={row.id} selected={isItemSelected}>
-                      <TableCell key={row.id} padding="checkbox">
+                      <TableCell padding="checkbox">
                         <Checkbox
                           style={{ color: "#5AA9E6" }}
                           checked={isItemSelected}
@@ -163,16 +171,6 @@ const App = () => {
                               {row[field]}
                             </StyledRedCell>
                           );
-                        } else if (field === "UPDATE_TIMESTAMP") {
-                          let str = row[field].slice(0, -7);
-                          let date = new Date(str);
-                          return (
-                            <TableCell key={_.uniqueId()}>
-                              {`${date.toLocaleDateString()} ${date.toLocaleTimeString(
-                                "en-US"
-                              )}`}
-                            </TableCell>
-                          );
                         } else {
                           return (
                             <TableCell key={_.uniqueId()}>
@@ -181,7 +179,24 @@ const App = () => {
                           );
                         }
                       })}
+                      <TableCell key={row.id} padding="checkbox">
+                        <StyledEditButton
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => setEdited(row.id)}
+                          disabled={edited !== false && edited !== row.id}
+                        >
+                          Edit
+                        </StyledEditButton>
+                      </TableCell>
                     </StyledTableRow>
+                  ) : (
+                    <EditedRow
+                      row={row}
+                      colsNames={colsNames}
+                      saveData={() => setEdited(false)}
+                      clients={clients}
+                    ></EditedRow>
                   );
                 })}
             </TableBody>

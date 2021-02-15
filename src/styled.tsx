@@ -2,6 +2,8 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Button from "@material-ui/core/Button";
+import InputBase from "@material-ui/core/InputBase";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,3 +74,15 @@ export const StyledTableSortLabel = withStyles((theme) => ({
     color: "inherit !important",
   },
 }))(TableSortLabel);
+
+export const StyledEditButton = withStyles((theme) => ({
+  root: {
+    color: "#5AA9E6",
+    backgroundColor: "white",
+    border: "1px solid #5AA9E6",
+    "&:hover": {
+      backgroundColor: "#d9efff",
+      border: "1px solid #5AA9E6",
+    },
+  },
+}))(Button);
