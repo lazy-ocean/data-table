@@ -38,13 +38,12 @@ export const EditedRow = (props: any) => {
         switch (field) {
           case "DESCRIPTION":
             return (
-              <TableCell key={_.uniqueId()}>
+              <TableCell key="edit_1">
                 <TextField
                   defaultValue={values[field]}
                   name={field}
                   size="small"
                   id="input-descr"
-                  key={_.uniqueId()}
                   style={{ fontSize: "11px" }}
                   InputProps={{ style: { fontSize: 14 } }}
                   InputLabelProps={{ style: { fontSize: 14 } }}
@@ -54,11 +53,10 @@ export const EditedRow = (props: any) => {
             );
           case "SOURCE_NM":
             return (
-              <TableCell key={_.uniqueId()}>
+              <TableCell key="edit_2">
                 <TextField
                   id="select-source"
                   select
-                  key={_.uniqueId()}
                   defaultValue={values[field]}
                   name={field}
                   onChange={handleChange}
@@ -77,12 +75,11 @@ export const EditedRow = (props: any) => {
             );
           case "CLIENT_NM":
             return (
-              <TableCell key={_.uniqueId()}>
+              <TableCell key="edit_3">
                 <Autocomplete
                   id="client-picker"
                   size="small"
                   options={clients}
-                  key={_.uniqueId()}
                   onChange={(e, newValue) =>
                     setValues({ ...values, [field]: newValue })
                   }
@@ -97,12 +94,11 @@ export const EditedRow = (props: any) => {
             );
           case "TERMINATION_DT":
             return (
-              <TableCell key={_.uniqueId()}>
+              <TableCell key="edit_4">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     variant="inline"
                     openTo="year"
-                    key={_.uniqueId()}
                     name={field}
                     views={["year", "month"]}
                     value={new Date(values[field])}
@@ -113,11 +109,10 @@ export const EditedRow = (props: any) => {
             );
           case "VALUE_3":
             return (
-              <TableCell key={_.uniqueId()}>
+              <TableCell key="edit_5">
                 <TextField
                   id="standard-number"
                   type="number"
-                  key={_.uniqueId()}
                   defaultValue={values[field]}
                   InputProps={{ style: { fontSize: 14 } }}
                   InputLabelProps={{
