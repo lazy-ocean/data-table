@@ -1,4 +1,8 @@
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  makeStyles,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
@@ -28,6 +32,37 @@ export const useStyles = makeStyles((theme) => ({
     width: 1,
   },
 }));
+
+export const theme = createMuiTheme({
+  overrides: {
+    // @ts-ignore
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#5AA9E6",
+      },
+    },
+    MuiPickersYear: {
+      yearSelected: {
+        color: "#5AA9E6",
+      },
+      root: {
+        "&:focus": {
+          color: "#5AA9E6",
+        },
+      },
+    },
+    MuiPickersMonth: {
+      monthSelected: {
+        color: "#5AA9E6",
+      },
+      root: {
+        "&:focus": {
+          color: "#5AA9E6",
+        },
+      },
+    },
+  },
+});
 
 export const StyledTableCell = withStyles((theme) => ({
   head: {

@@ -6,8 +6,9 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { StyledEditButton, theme } from "./styled";
+import { ThemeProvider } from "@material-ui/styles";
 
-import { StyledEditButton } from "./styled";
 const _ = require("lodash");
 
 const sourceMap = ["DEV", "UAT", "PROD"];
@@ -25,7 +26,7 @@ export const EditedRow = (props: any) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
-    const { name, value } = target;
+    let { name, value } = target;
     setValues({ ...values, [name]: value });
   };
 
@@ -96,14 +97,16 @@ export const EditedRow = (props: any) => {
             return (
               <TableCell key="edit_4">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    variant="inline"
-                    openTo="year"
-                    name={field}
-                    views={["year", "month"]}
-                    value={new Date(values[field])}
-                    onChange={handleDateChange}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <DatePicker
+                      variant="inline"
+                      openTo="year"
+                      name={field}
+                      views={["year", "month"]}
+                      value={new Date(values[field])}
+                      onChange={handleDateChange}
+                    />
+                  </ThemeProvider>
                 </MuiPickersUtilsProvider>
               </TableCell>
             );
@@ -114,7 +117,9 @@ export const EditedRow = (props: any) => {
                   id="standard-number"
                   type="number"
                   defaultValue={values[field]}
-                  InputProps={{ style: { fontSize: 14 } }}
+                  InputProps={{
+                    style: { fontSize: 14 },
+                  }}
                   InputLabelProps={{
                     shrink: true,
                     style: { fontSize: 14 },
