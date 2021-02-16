@@ -7,10 +7,14 @@ export const getRows = (): Promise<any> => {
   );
   //const rows = promise.then((response: any) => response.data.items);
   const rows = promise.then((response: any) =>
-    Object.keys(response.data.items).reduce((acc: Array<any>, key) => {
+    response.data.items.reduce((acc: Array<any>, item: any) => {
+      let str = item["UPDATE_TIMESTAMP"].slice(0, -7);
+      let date = new Date(str);
+
       let data = {
-        ...response.data.items[key],
-        id: response.data.items[key]["ID"],
+        ...item,
+        id: item["ID"],
+        UPDATE_TIMESTAMP: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
       };
       acc.push(data);
       return acc;

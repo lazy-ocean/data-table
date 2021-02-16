@@ -7,7 +7,9 @@ import {
   StyledYellowCell,
   StyledTableSortLabel,
   useStyles,
+  StyledEditButton,
 } from "./styled";
+import { EditedRow } from "./editedRow";
 
 import React, { useEffect, useState } from "react";
 
@@ -20,6 +22,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
+const _ = require("lodash");
 
 const App = () => {
   let Order: "asc" | "desc";
@@ -27,11 +30,12 @@ const App = () => {
   let [rows, setRowsData] = useState<any[]>([]);
   let [columns, setColumnsData] = useState<any[]>([]);
   let [page, setPage] = React.useState(0);
-  let [rowsPerPage, setRowsPerPage] = React.useState(10);
+  let [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
-  const [orderBy, setOrderBy] = React.useState("#");
+  const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
+  const [edited, setEdited] = React.useState<string | false>(false);
 
   useEffect(() => {
     const colsData = async () => {
@@ -75,9 +79,14 @@ const App = () => {
     setPage(page);
   };
 
+  const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newRows = e.target.value;
+    setRowsPerPage(parseInt(newRows));
+    setPage(0);
+  };
+
   const classes = useStyles();
   const handleRequestSort = (field: string) => {
-    const isAsc = orderBy === field && order === "asc";
     setOrder(order === "asc" ? "desc" : "asc");
     setOrderBy(field);
   };
@@ -85,12 +94,21 @@ const App = () => {
   function stableSort(array: any[]): any[] {
     // @ts-ignore
     let sorted = _.sortBy(array, function (obj) {
-      return obj[orderBy];
+      return typeof obj[orderBy] === "string"
+        ? obj[orderBy].toLowerCase()
+        : obj[orderBy];
     });
     return order === "asc" ? sorted : sorted.reverse();
   }
 
+  const handleEditing = (rowData: any) => {
+    let newData = rows.map((row) => (row.id === edited ? rowData : row));
+    setRowsData(newData);
+    setEdited(false);
+  };
+
   let colsNames = columns.map((col) => col.field);
+  let clients = rows.map((row) => row["CLIENT_NM"]);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -128,6 +146,7 @@ const App = () => {
                     </StyledTableSortLabel>
                   </StyledTableCell>
                 ))}
+                <StyledTableCell padding="checkbox"></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -135,7 +154,7 @@ const App = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   const isItemSelected = isSelected(row.id);
-                  return (
+                  return edited !== row.id ? (
                     <StyledTableRow key={row.id} selected={isItemSelected}>
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -147,15 +166,41 @@ const App = () => {
                       {colsNames.map((field) => {
                         if (field === "VALUE_1" && row[field] > 2000) {
                           return row[field] < 3000 ? (
-                            <StyledYellowCell>{row[field]}</StyledYellowCell>
+                            <StyledYellowCell key={_.uniqueId()}>
+                              {row[field]}
+                            </StyledYellowCell>
                           ) : (
-                            <StyledRedCell>{row[field]}</StyledRedCell>
+                            <StyledRedCell key={_.uniqueId()}>
+                              {row[field]}
+                            </StyledRedCell>
                           );
                         } else {
-                          return <TableCell>{row[field]}</TableCell>;
+                          return (
+                            <TableCell key={_.uniqueId()}>
+                              {row[field]}
+                            </TableCell>
+                          );
                         }
                       })}
+                      <TableCell key={row.id} padding="checkbox">
+                        <StyledEditButton
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => setEdited(row.id)}
+                          disabled={edited !== false && edited !== row.id}
+                        >
+                          Edit
+                        </StyledEditButton>
+                      </TableCell>
                     </StyledTableRow>
+                  ) : (
+                    <EditedRow
+                      row={row}
+                      colsNames={colsNames}
+                      saveData={(data: any) => handleEditing(data)}
+                      clients={clients}
+                      key={row.id}
+                    ></EditedRow>
                   );
                 })}
             </TableBody>
@@ -170,9 +215,9 @@ const App = () => {
             </TableCell>
           ) : null}
           <TablePagination
-            component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
             page={page}
             onChangePage={handleChangePage}
             style={{ flexGrow: 1 }}
