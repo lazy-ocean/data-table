@@ -21,7 +21,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
 import TablePagination from "@material-ui/core/TablePagination";
 const _ = require("lodash");
 
@@ -36,9 +35,7 @@ const App = () => {
   const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
-  const [edited, setEdited] = React.useState<string | false>(
-    "5ee3acd9807b3b1dd49f5725"
-  );
+  const [edited, setEdited] = React.useState<string | false>(false);
 
   useEffect(() => {
     const colsData = async () => {
@@ -103,6 +100,12 @@ const App = () => {
     });
     return order === "asc" ? sorted : sorted.reverse();
   }
+
+  const handleEditing = (rowData: any) => {
+    let newData = rows.map((row) => (row.id === edited ? rowData : row));
+    setRowsData(newData);
+    setEdited(false);
+  };
 
   let colsNames = columns.map((col) => col.field);
   let clients = rows.map((row) => row["CLIENT_NM"]);
@@ -194,8 +197,9 @@ const App = () => {
                     <EditedRow
                       row={row}
                       colsNames={colsNames}
-                      saveData={() => setEdited(false)}
+                      saveData={(data: any) => handleEditing(data)}
                       clients={clients}
+                      key={row.id}
                     ></EditedRow>
                   );
                 })}

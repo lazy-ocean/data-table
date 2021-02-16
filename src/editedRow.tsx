@@ -14,11 +14,19 @@ const sourceMap = ["DEV", "UAT", "PROD"];
 
 export const EditedRow = (props: any) => {
   let { row, colsNames, saveData, clients } = props;
-  let [source, setSource] = useState<string>(row["SOURCE_NM"]);
-  let [date, setDate] = useState<Date | null>(null);
+  let [values, setValues] = useState(row);
 
   const handleDateChange = (date: Date | null) => {
-    setDate(date);
+    let month = (date!.getMonth() + 1).toString();
+    let year = date?.getFullYear();
+    let newDate = `${year}-${month.padStart(2, "0")}`;
+    setValues({ ...values, TERMINATION_DT: newDate });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    const { name, value } = target;
+    setValues({ ...values, [name]: value });
   };
 
   return (
@@ -32,12 +40,15 @@ export const EditedRow = (props: any) => {
             return (
               <TableCell key={_.uniqueId()}>
                 <TextField
-                  defaultValue={row[field]}
+                  defaultValue={values[field]}
+                  name={field}
                   size="small"
                   id="input-descr"
+                  key={_.uniqueId()}
                   style={{ fontSize: "11px" }}
                   InputProps={{ style: { fontSize: 14 } }}
                   InputLabelProps={{ style: { fontSize: 14 } }}
+                  onChange={handleChange}
                 />
               </TableCell>
             );
@@ -47,8 +58,10 @@ export const EditedRow = (props: any) => {
                 <TextField
                   id="select-source"
                   select
-                  defaultValue={row[field]}
-                  //onChange={() => setSource()}
+                  key={_.uniqueId()}
+                  defaultValue={values[field]}
+                  name={field}
+                  onChange={handleChange}
                   InputProps={{ style: { fontSize: 14 } }}
                   SelectProps={{
                     native: true,
@@ -69,6 +82,11 @@ export const EditedRow = (props: any) => {
                   id="client-picker"
                   size="small"
                   options={clients}
+                  key={_.uniqueId()}
+                  onChange={(e, newValue) =>
+                    setValues({ ...values, [field]: newValue })
+                  }
+                  defaultValue={values[field]}
                   getOptionLabel={(option: string) => option}
                   style={{ width: 100, fontSize: 14 }}
                   renderInput={(params) => (
@@ -84,8 +102,10 @@ export const EditedRow = (props: any) => {
                   <DatePicker
                     variant="inline"
                     openTo="year"
+                    key={_.uniqueId()}
+                    name={field}
                     views={["year", "month"]}
-                    value={date}
+                    value={new Date(values[field])}
                     onChange={handleDateChange}
                   />
                 </MuiPickersUtilsProvider>
@@ -97,12 +117,15 @@ export const EditedRow = (props: any) => {
                 <TextField
                   id="standard-number"
                   type="number"
-                  defaultValue={row[field]}
+                  key={_.uniqueId()}
+                  defaultValue={values[field]}
                   InputProps={{ style: { fontSize: 14 } }}
                   InputLabelProps={{
                     shrink: true,
                     style: { fontSize: 14 },
                   }}
+                  name={field}
+                  onChange={handleChange}
                 />
               </TableCell>
             );
@@ -114,7 +137,7 @@ export const EditedRow = (props: any) => {
         <StyledEditButton
           variant="contained"
           color="primary"
-          onClick={() => saveData(row.id)}
+          onClick={() => saveData(values)}
         >
           Save
         </StyledEditButton>
