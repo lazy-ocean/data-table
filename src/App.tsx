@@ -8,6 +8,7 @@ import {
   StyledTableSortLabel,
   useStyles,
   StyledEditButton,
+  StyledFilterButton,
 } from "./styled";
 import { EditedRow } from "./editedRow";
 
@@ -22,6 +23,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
+import Button from "@material-ui/core/Button";
+
 const _ = require("lodash");
 
 const App = () => {
@@ -30,7 +33,7 @@ const App = () => {
   let [rows, setRowsData] = useState<any[]>([]);
   let [columns, setColumnsData] = useState<any[]>([]);
   let [page, setPage] = React.useState(0);
-  let [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+  let [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
   const [order, setOrder] = React.useState<typeof Order>("asc");
   const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -213,23 +216,33 @@ const App = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TableRow style={{ display: "flex", justifyContent: "space-between" }}>
-          {selected.length ? (
-            <TableCell align="right">
-              {selected.length === 1
-                ? `1 item selected`
-                : `${selected.length} items selected`}
-            </TableCell>
-          ) : null}
-          <TablePagination
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            style={{ flexGrow: 1 }}
-          />
-        </TableRow>
+        <Table>
+          <TableBody>
+            <TableRow style={{ display: "flex" }}>
+              <TableCell
+                align="left"
+                style={{ flexGrow: 1, borderBottom: "none" }}
+              >
+                {selected.length
+                  ? selected.length === 1
+                    ? `1 item selected`
+                    : `${selected.length} items selected`
+                  : ""}
+              </TableCell>
+              <StyledFilterButton variant="contained" color="primary">
+                Filter
+              </StyledFilterButton>
+              <TablePagination
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                style={{ borderBottom: "none" }}
+              />
+            </TableRow>
+          </TableBody>
+        </Table>
       </Paper>
     </div>
   );

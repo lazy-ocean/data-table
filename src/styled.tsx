@@ -1,7 +1,7 @@
 import {
   withStyles,
   makeStyles,
-  createMuiTheme,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
 } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
@@ -117,6 +117,17 @@ export const StyledEditButton = withStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#d9efff",
       border: "1px solid #5AA9E6",
+    },
+  },
+}))(Button);
+
+export const StyledFilterButton = withStyles((theme) => ({
+  root: {
+    color: "white",
+    backgroundColor: "#5AA9E6",
+    alignSelf: "center",
+    "&:hover": {
+      backgroundColor: "#5AA9E6",
     },
   },
 }))(Button);
