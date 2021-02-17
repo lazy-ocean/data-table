@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
 
 export const useStyles = makeStyles((theme) => ({
   root: {

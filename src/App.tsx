@@ -11,6 +11,7 @@ import {
   StyledFilterButton,
 } from "./styled";
 import { EditedRow } from "./editedRow";
+import { FilterModal } from "./modal";
 
 import React, { useEffect, useState } from "react";
 
@@ -39,6 +40,15 @@ const App = () => {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
   const [edited, setEdited] = React.useState<string | false>(false);
+  const [filterModal, openFilterModal] = React.useState<boolean>(false);
+
+  const handleModalOpen = () => {
+    openFilterModal(true);
+  };
+
+  const handleModalClose = () => {
+    openFilterModal(false);
+  };
 
   useEffect(() => {
     const colsData = async () => {
@@ -121,6 +131,11 @@ const App = () => {
   let clients = rows.map((row) => row["CLIENT_NM"]);
   return (
     <div className={classes.root}>
+      <FilterModal
+        clients={clients}
+        open={filterModal}
+        onClose={handleModalClose}
+      />
       <Paper className={classes.paper}>
         <TableContainer component={Paper}>
           <Table
@@ -229,7 +244,11 @@ const App = () => {
                     : `${selected.length} items selected`
                   : ""}
               </TableCell>
-              <StyledFilterButton variant="contained" color="primary">
+              <StyledFilterButton
+                variant="contained"
+                color="primary"
+                onClick={handleModalOpen}
+              >
                 Filter
               </StyledFilterButton>
               <TablePagination
