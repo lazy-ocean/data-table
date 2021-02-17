@@ -37,7 +37,6 @@ export const FilterModal = (props: any) => {
     let { name, value } = target;
     setFilters({ ...filters, [name]: value });
   };
-
   return (
     <Dialog
       open={open}
@@ -50,8 +49,10 @@ export const FilterModal = (props: any) => {
         },
       }}
     >
-      <DialogTitle id="form-dialog-title">Data filters</DialogTitle>
-      <DialogContent>
+      <DialogTitle id="form-dialog-title" style={{ padding: "15px" }}>
+        Data filters
+      </DialogTitle>
+      <DialogContent style={{ paddingLeft: "15px" }}>
         <DialogContentText>Choose fields to filter rows:</DialogContentText>
       </DialogContent>
       <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>

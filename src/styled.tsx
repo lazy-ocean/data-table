@@ -7,7 +7,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,42 +31,22 @@ export const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  subtitle1: {
+    paddingBottom: "15px",
+  },
 }));
 
 export const theme = createMuiTheme({
-  overrides: {
-    // @ts-ignore
-    MuiPickersToolbar: {
-      toolbar: {
-        backgroundColor: "#5AA9E6",
-      },
-    },
-    MuiPickersYear: {
-      yearSelected: {
-        color: "#5AA9E6",
-      },
-      root: {
-        "&:focus": {
-          color: "#5AA9E6",
-        },
-      },
-    },
-    MuiPickersMonth: {
-      monthSelected: {
-        color: "#5AA9E6",
-      },
-      root: {
-        "&:focus": {
-          color: "#5AA9E6",
-        },
-      },
+  palette: {
+    primary: {
+      main: "#5AA9E6",
     },
   },
 });
 
 export const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#5AA9E6",
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
 }))(TableCell);
@@ -112,7 +91,7 @@ export const StyledTableSortLabel = withStyles((theme) => ({
 
 export const StyledEditButton = withStyles((theme) => ({
   root: {
-    color: "#5AA9E6",
+    color: theme.palette.primary.main,
     backgroundColor: "white",
     border: "1px solid #5AA9E6",
     "&:hover": {
@@ -125,7 +104,6 @@ export const StyledEditButton = withStyles((theme) => ({
 export const StyledFilterButton = withStyles((theme) => ({
   root: {
     color: "white",
-    backgroundColor: "#5AA9E6",
     alignSelf: "center",
     "&:hover": {
       backgroundColor: "#5AA9E6",
