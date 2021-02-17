@@ -35,104 +35,16 @@ export const EditedRow = (props: any) => {
       <TableCell padding="checkbox">
         <Checkbox style={{ color: "#5AA9E6" }} disabled />
       </TableCell>
-      {colsNames.map((field: string) => {
-        switch (field) {
-          case "DESCRIPTION":
-            return (
-              <TableCell key="edit_1">
-                <TextField
-                  defaultValue={values[field]}
-                  name={field}
-                  size="small"
-                  id="input-descr"
-                  style={{ fontSize: "11px" }}
-                  InputProps={{ style: { fontSize: 14 } }}
-                  InputLabelProps={{ style: { fontSize: 14 } }}
-                  onChange={handleChange}
-                />
-              </TableCell>
-            );
-          case "SOURCE_NM":
-            return (
-              <TableCell key="edit_2">
-                <TextField
-                  id="select-source"
-                  select
-                  defaultValue={values[field]}
-                  name={field}
-                  onChange={handleChange}
-                  InputProps={{ style: { fontSize: 14 } }}
-                  SelectProps={{
-                    native: true,
-                  }}
-                >
-                  {sourceMap.map((source) => (
-                    <option key={source} value={source}>
-                      {source}
-                    </option>
-                  ))}
-                </TextField>
-              </TableCell>
-            );
-          case "CLIENT_NM":
-            return (
-              <TableCell key="edit_3">
-                <Autocomplete
-                  id="client-picker"
-                  size="small"
-                  options={clients}
-                  onChange={(e, newValue) =>
-                    setValues({ ...values, [field]: newValue })
-                  }
-                  defaultValue={values[field]}
-                  getOptionLabel={(option: string) => option}
-                  style={{ width: 100, fontSize: 14 }}
-                  renderInput={(params) => (
-                    <TextField {...params} variant="outlined" />
-                  )}
-                />
-              </TableCell>
-            );
-          case "TERMINATION_DT":
-            return (
-              <TableCell key="edit_4">
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <ThemeProvider theme={theme}>
-                    <DatePicker
-                      variant="inline"
-                      openTo="year"
-                      name={field}
-                      views={["year", "month"]}
-                      value={new Date(values[field])}
-                      onChange={handleDateChange}
-                    />
-                  </ThemeProvider>
-                </MuiPickersUtilsProvider>
-              </TableCell>
-            );
-          case "VALUE_3":
-            return (
-              <TableCell key="edit_5">
-                <TextField
-                  id="standard-number"
-                  type="number"
-                  defaultValue={values[field]}
-                  InputProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { fontSize: 14 },
-                  }}
-                  name={field}
-                  onChange={handleChange}
-                />
-              </TableCell>
-            );
-          default:
-            return <TableCell key={_.uniqueId()}>{row[field]}</TableCell>;
-        }
-      })}
+      <EditingCells
+        colsNames={colsNames}
+        values={values}
+        handleChange={handleChange}
+        clients={clients}
+        setValues={setValues}
+        handleDateChange={handleDateChange}
+        row={row}
+        type="table"
+      />
       <TableCell key={row.id} padding="checkbox">
         <StyledEditButton
           variant="contained"
@@ -144,4 +56,122 @@ export const EditedRow = (props: any) => {
       </TableCell>
     </TableRow>
   );
+};
+
+export const EditingCells = (props: any) => {
+  let {
+    colsNames,
+    values,
+    handleChange,
+    clients,
+    setValues,
+    handleDateChange,
+    row,
+    type,
+  } = props;
+  return colsNames.map((field: string) => {
+    switch (field) {
+      case "DESCRIPTION":
+        return (
+          <TableCell key="edit_1">
+            <TextField
+              defaultValue={values[field]}
+              name={field}
+              size="small"
+              id="input-descr"
+              style={{ fontSize: "11px", width: "100%" }}
+              InputProps={{ style: { fontSize: 14 } }}
+              InputLabelProps={{ style: { fontSize: 14 } }}
+              onChange={handleChange}
+              label={type === "form" ? "Item description" : false}
+            />
+          </TableCell>
+        );
+      case "SOURCE_NM":
+        return (
+          <TableCell key="edit_2">
+            <TextField
+              id="select-source"
+              select
+              defaultValue={values[field]}
+              name={field}
+              onChange={handleChange}
+              InputProps={{ style: { fontSize: 14 } }}
+              SelectProps={{
+                native: true,
+              }}
+              label={type === "form" ? "Source" : false}
+            >
+              {sourceMap.map((source) => (
+                <option key={source} value={source}>
+                  {source}
+                </option>
+              ))}
+            </TextField>
+          </TableCell>
+        );
+      case "CLIENT_NM":
+        return (
+          <TableCell key="edit_3">
+            <Autocomplete
+              id="client-picker"
+              size="small"
+              options={clients}
+              onChange={(e, newValue) =>
+                setValues({ ...values, [field]: newValue })
+              }
+              defaultValue={values[field]}
+              getOptionLabel={(option: string) => option}
+              style={{ width: "100%", fontSize: 14 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label={type === "form" ? "Client name" : false}
+                />
+              )}
+            />
+          </TableCell>
+        );
+      case "TERMINATION_DT":
+        return (
+          <TableCell key="edit_4">
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={theme}>
+                <DatePicker
+                  variant="inline"
+                  openTo="year"
+                  name={field}
+                  views={["year", "month"]}
+                  value={new Date(values[field])}
+                  onChange={handleDateChange}
+                  label={type === "form" ? "Termination date" : false}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
+          </TableCell>
+        );
+      case "VALUE_3":
+        return (
+          <TableCell key="edit_5">
+            <TextField
+              id="standard-number"
+              type="number"
+              defaultValue={values[field]}
+              InputProps={{
+                style: { fontSize: 14 },
+              }}
+              InputLabelProps={{
+                style: { fontSize: 14 },
+              }}
+              name={field}
+              onChange={handleChange}
+              label={type === "form" ? "Max range" : false}
+            />
+          </TableCell>
+        );
+      default:
+        return <TableCell key={_.uniqueId()}>{row[field]}</TableCell>;
+    }
+  });
 };
