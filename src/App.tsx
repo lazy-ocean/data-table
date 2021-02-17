@@ -102,7 +102,14 @@ const App = () => {
   }
 
   const handleEditing = (rowData: any) => {
-    let newData = rows.map((row) => (row.id === edited ? rowData : row));
+    let newData = rows.map((row) => {
+      if (row.id === edited) {
+        return Object.keys(rowData).reduce((acc: any, key) => {
+          acc[key] = rowData[key] ? rowData[key] : row[key];
+          return acc;
+        }, {});
+      } else return row;
+    });
     setRowsData(newData);
     setEdited(false);
   };
