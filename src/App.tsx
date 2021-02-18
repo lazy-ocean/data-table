@@ -25,6 +25,7 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 const _ = require("lodash");
 
@@ -192,59 +193,72 @@ const App = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(rows)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  const isItemSelected = isSelected(row.id);
-                  return edited !== row.id ? (
-                    <StyledTableRow key={row.id} selected={isItemSelected}>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          style={{ color: "#5AA9E6" }}
-                          checked={isItemSelected}
-                          onClick={() => handleSelect(row.id)}
-                        />
-                      </TableCell>
-                      {colsNames.map((field) => {
-                        if (field === "VALUE_1" && row[field] > 2000) {
-                          return row[field] < 3000 ? (
-                            <StyledYellowCell key={_.uniqueId()}>
-                              {row[field]}
-                            </StyledYellowCell>
-                          ) : (
-                            <StyledRedCell key={_.uniqueId()}>
-                              {row[field]}
-                            </StyledRedCell>
-                          );
-                        } else {
-                          return (
-                            <TableCell key={_.uniqueId()}>
-                              {row[field]}
-                            </TableCell>
-                          );
-                        }
-                      })}
-                      <TableCell key={row.id} padding="checkbox">
-                        <StyledEditButton
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => setEdited(row.id)}
-                          disabled={edited !== false && edited !== row.id}
-                        >
-                          Edit
-                        </StyledEditButton>
-                      </TableCell>
-                    </StyledTableRow>
-                  ) : (
-                    <EditedRow
-                      row={row}
-                      colsNames={colsNames}
-                      saveData={(data: any) => handleEditing(data)}
-                      clients={clients}
-                      key={row.id}
-                    ></EditedRow>
-                  );
-                })}
+              {rows.length ? (
+                stableSort(rows)
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    const isItemSelected = isSelected(row.id);
+                    return edited !== row.id ? (
+                      <StyledTableRow key={row.id} selected={isItemSelected}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            style={{ color: "#5AA9E6" }}
+                            checked={isItemSelected}
+                            onClick={() => handleSelect(row.id)}
+                          />
+                        </TableCell>
+                        {colsNames.map((field) => {
+                          if (field === "VALUE_1" && row[field] > 2000) {
+                            return row[field] < 3000 ? (
+                              <StyledYellowCell key={_.uniqueId()}>
+                                {row[field]}
+                              </StyledYellowCell>
+                            ) : (
+                              <StyledRedCell key={_.uniqueId()}>
+                                {row[field]}
+                              </StyledRedCell>
+                            );
+                          } else {
+                            return (
+                              <TableCell key={_.uniqueId()}>
+                                {row[field]}
+                              </TableCell>
+                            );
+                          }
+                        })}
+                        <TableCell key={row.id} padding="checkbox">
+                          <StyledEditButton
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => setEdited(row.id)}
+                            disabled={edited !== false && edited !== row.id}
+                          >
+                            Edit
+                          </StyledEditButton>
+                        </TableCell>
+                      </StyledTableRow>
+                    ) : (
+                      <EditedRow
+                        row={row}
+                        colsNames={colsNames}
+                        saveData={(data: any) => handleEditing(data)}
+                        clients={clients}
+                        key={row.id}
+                      ></EditedRow>
+                    );
+                  })
+              ) : activeFilter ? (
+                <TableRow>
+                  <TableCell colSpan={13}>
+                    <Typography
+                      variant="h6"
+                      style={{ textAlign: "center", margin: "30px" }}
+                    >
+                      No items matching set filters
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ) : null}
             </TableBody>
           </Table>
         </TableContainer>
