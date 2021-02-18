@@ -8,8 +8,10 @@ import {
   StyledTableSortLabel,
   useStyles,
   StyledEditButton,
+  StyledFilterButton,
 } from "./styled";
 import { EditedRow } from "./editedRow";
+import { FilterModal } from "./modal";
 
 import React, { useEffect, useState } from "react";
 
@@ -22,6 +24,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import TablePagination from "@material-ui/core/TablePagination";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
 const _ = require("lodash");
 
 const App = () => {
@@ -36,6 +41,31 @@ const App = () => {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
   const [edited, setEdited] = React.useState<string | false>(false);
+  const [filterModal, openFilterModal] = React.useState<boolean>(false);
+  const [activeFilter, toggleFilter] = React.useState<boolean>(false);
+
+  const handleModalOpen = () => {
+    openFilterModal(true);
+  };
+
+  const handleModalClose = () => {
+    openFilterModal(false);
+    toggleFilter(false);
+  };
+
+  const handleFiltering = (filterData: any) => {
+    let criteria = Object.keys(filterData).filter((key) => filterData[key]);
+    let newData = rows.filter((row) => {
+      return criteria.every((item) =>
+        item === "DESCRIPTION"
+          ? row[item].toLowerCase().includes(filterData[item].toLowerCase())
+          : filterData[item] === row[item]
+      );
+    });
+    setRowsData(newData);
+    openFilterModal(false);
+    toggleFilter(true);
+  };
 
   useEffect(() => {
     const colsData = async () => {
@@ -118,6 +148,12 @@ const App = () => {
   let clients = rows.map((row) => row["CLIENT_NM"]);
   return (
     <div className={classes.root}>
+      <FilterModal
+        clients={clients}
+        open={filterModal}
+        onClose={handleModalClose}
+        filterData={(data: any) => handleFiltering(data)}
+      />
       <Paper className={classes.paper}>
         <TableContainer component={Paper}>
           <Table
@@ -157,79 +193,124 @@ const App = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(rows)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  const isItemSelected = isSelected(row.id);
-                  return edited !== row.id ? (
-                    <StyledTableRow key={row.id} selected={isItemSelected}>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          style={{ color: "#5AA9E6" }}
-                          checked={isItemSelected}
-                          onClick={() => handleSelect(row.id)}
-                        />
-                      </TableCell>
-                      {colsNames.map((field) => {
-                        if (field === "VALUE_1" && row[field] > 2000) {
-                          return row[field] < 3000 ? (
-                            <StyledYellowCell key={_.uniqueId()}>
-                              {row[field]}
-                            </StyledYellowCell>
-                          ) : (
-                            <StyledRedCell key={_.uniqueId()}>
-                              {row[field]}
-                            </StyledRedCell>
-                          );
-                        } else {
-                          return (
-                            <TableCell key={_.uniqueId()}>
-                              {row[field]}
-                            </TableCell>
-                          );
-                        }
-                      })}
-                      <TableCell key={row.id} padding="checkbox">
-                        <StyledEditButton
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => setEdited(row.id)}
-                          disabled={edited !== false && edited !== row.id}
-                        >
-                          Edit
-                        </StyledEditButton>
-                      </TableCell>
-                    </StyledTableRow>
-                  ) : (
-                    <EditedRow
-                      row={row}
-                      colsNames={colsNames}
-                      saveData={(data: any) => handleEditing(data)}
-                      clients={clients}
-                      key={row.id}
-                    ></EditedRow>
-                  );
-                })}
+              {rows.length ? (
+                stableSort(rows)
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    const isItemSelected = isSelected(row.id);
+                    return edited !== row.id ? (
+                      <StyledTableRow key={row.id} selected={isItemSelected}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            style={{ color: "#5AA9E6" }}
+                            checked={isItemSelected}
+                            onClick={() => handleSelect(row.id)}
+                          />
+                        </TableCell>
+                        {colsNames.map((field) => {
+                          if (field === "VALUE_1" && row[field] > 2000) {
+                            return row[field] < 3000 ? (
+                              <StyledYellowCell key={_.uniqueId()}>
+                                {row[field]}
+                              </StyledYellowCell>
+                            ) : (
+                              <StyledRedCell key={_.uniqueId()}>
+                                {row[field]}
+                              </StyledRedCell>
+                            );
+                          } else {
+                            return (
+                              <TableCell key={_.uniqueId()}>
+                                {row[field]}
+                              </TableCell>
+                            );
+                          }
+                        })}
+                        <TableCell key={row.id} padding="checkbox">
+                          <StyledEditButton
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => setEdited(row.id)}
+                            disabled={edited !== false && edited !== row.id}
+                          >
+                            Edit
+                          </StyledEditButton>
+                        </TableCell>
+                      </StyledTableRow>
+                    ) : (
+                      <EditedRow
+                        row={row}
+                        colsNames={colsNames}
+                        saveData={(data: any) => handleEditing(data)}
+                        clients={clients}
+                        key={row.id}
+                      ></EditedRow>
+                    );
+                  })
+              ) : activeFilter ? (
+                <TableRow>
+                  <TableCell colSpan={13}>
+                    <Typography
+                      variant="h6"
+                      style={{ textAlign: "center", margin: "30px" }}
+                    >
+                      No items matching set filters
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ) : null}
             </TableBody>
           </Table>
         </TableContainer>
-        <TableRow style={{ display: "flex", justifyContent: "space-between" }}>
-          {selected.length ? (
-            <TableCell align="right">
-              {selected.length === 1
-                ? `1 item selected`
-                : `${selected.length} items selected`}
-            </TableCell>
-          ) : null}
-          <TablePagination
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            style={{ flexGrow: 1 }}
-          />
-        </TableRow>
+        <Table>
+          <TableBody>
+            <TableRow style={{ display: "flex" }}>
+              <TableCell
+                align="left"
+                style={{ flexGrow: 1, borderBottom: "none" }}
+              >
+                {selected.length
+                  ? selected.length === 1
+                    ? `1 item selected`
+                    : `${selected.length} items selected`
+                  : ""}
+              </TableCell>
+              <TableCell style={{ borderBottom: "none", padding: 8 }}>
+                <StyledFilterButton
+                  variant="contained"
+                  color="primary"
+                  onClick={handleModalOpen}
+                  disabled={edited !== false}
+                >
+                  Filter
+                </StyledFilterButton>
+                {activeFilter && (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={edited !== false}
+                    onClick={() =>
+                      Promise.resolve(getRows())
+                        .then((v) => setRowsData(v))
+                        .then(() => toggleFilter(false))
+                    }
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </TableCell>
+
+              <TablePagination
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                style={{ borderBottom: "none" }}
+              />
+            </TableRow>
+          </TableBody>
+        </Table>
       </Paper>
     </div>
   );
