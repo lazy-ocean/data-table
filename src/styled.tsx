@@ -108,5 +108,6 @@ export const StyledFilterButton = withStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#5AA9E6",
     },
+    marginRight: 10,
   },
 }))(Button);

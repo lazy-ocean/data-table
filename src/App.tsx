@@ -34,13 +34,14 @@ const App = () => {
   let [rows, setRowsData] = useState<any[]>([]);
   let [columns, setColumnsData] = useState<any[]>([]);
   let [page, setPage] = React.useState(0);
-  let [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
+  let [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
   const [orderBy, setOrderBy] = React.useState("RN");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [checkedAll, checkAll] = React.useState<boolean>(false);
   const [edited, setEdited] = React.useState<string | false>(false);
   const [filterModal, openFilterModal] = React.useState<boolean>(false);
+  const [activeFilter, toggleFilter] = React.useState<boolean>(false);
 
   const handleModalOpen = () => {
     openFilterModal(true);
@@ -48,6 +49,21 @@ const App = () => {
 
   const handleModalClose = () => {
     openFilterModal(false);
+    toggleFilter(false);
+  };
+
+  const handleFiltering = (filterData: any) => {
+    let criteria = Object.keys(filterData).filter((key) => filterData[key]);
+    let newData = rows.filter((row) => {
+      return criteria.every((item) =>
+        item === "DESCRIPTION"
+          ? row[item].toLowerCase().includes(filterData[item].toLowerCase())
+          : filterData[item] === row[item]
+      );
+    });
+    setRowsData(newData);
+    openFilterModal(false);
+    toggleFilter(true);
   };
 
   useEffect(() => {
@@ -135,6 +151,7 @@ const App = () => {
         clients={clients}
         open={filterModal}
         onClose={handleModalClose}
+        filterData={(data: any) => handleFiltering(data)}
       />
       <Paper className={classes.paper}>
         <TableContainer component={Paper}>
@@ -244,13 +261,31 @@ const App = () => {
                     : `${selected.length} items selected`
                   : ""}
               </TableCell>
-              <StyledFilterButton
-                variant="contained"
-                color="primary"
-                onClick={handleModalOpen}
-              >
-                Filter
-              </StyledFilterButton>
+              <TableCell style={{ borderBottom: "none", padding: 8 }}>
+                <StyledFilterButton
+                  variant="contained"
+                  color="primary"
+                  onClick={handleModalOpen}
+                  disabled={edited !== false}
+                >
+                  Filter
+                </StyledFilterButton>
+                {activeFilter && (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={edited !== false}
+                    onClick={() =>
+                      Promise.resolve(getRows())
+                        .then((v) => setRowsData(v))
+                        .then(() => toggleFilter(false))
+                    }
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </TableCell>
+
               <TablePagination
                 count={rows.length}
                 rowsPerPage={rowsPerPage}

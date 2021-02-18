@@ -5,17 +5,20 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
 import { EditingCells } from "./editedRow";
 
 export const FilterModal = (props: any) => {
   let row = {
     DESCRIPTION: "",
     SOURCE_NM: "",
-    CLIENT_NM: "",
-    TERMINATION_DT: "2017-04",
+    CLIENT_NM: null,
+    TERMINATION_DT: null,
     VALUE_3: null,
   };
-  const { open, onClose, clients } = props;
+  const { open, onClose, clients, filterData } = props;
   let [filters, setFilters] = useState(row);
   let colsNames = [
     "DESCRIPTION",
@@ -25,10 +28,21 @@ export const FilterModal = (props: any) => {
     "VALUE_3",
   ];
 
+  const handleClose = (arg: string) => {
+    if (arg === "cancel") {
+      setFilters(row);
+      onClose();
+    } else {
+      setFilters(row);
+      filterData(filters);
+    }
+  };
+
   const handleDateChange = (date: Date | null) => {
     let month = (date!.getMonth() + 1).toString();
     let year = date?.getFullYear();
     let newDate = `${year}-${month.padStart(2, "0")}`;
+    // @ts-ignore
     setFilters({ ...filters, TERMINATION_DT: newDate });
   };
 
@@ -52,27 +66,34 @@ export const FilterModal = (props: any) => {
       <DialogTitle id="form-dialog-title" style={{ padding: "15px" }}>
         Data filters
       </DialogTitle>
-      <DialogContent style={{ paddingLeft: "15px" }}>
+      <DialogContent style={{ paddingLeft: "15px", overflowY: "unset" }}>
         <DialogContentText>Choose fields to filter rows:</DialogContentText>
       </DialogContent>
-      <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-        <EditingCells
-          colsNames={colsNames}
-          values={filters}
-          handleChange={handleChange}
-          clients={clients}
-          setValues={setFilters}
-          handleDateChange={handleDateChange}
-          row={row}
-          type="form"
-        />
-      </div>
-
+      <Table>
+        <TableBody
+          style={{ width: "100%", display: "flex", flexDirection: "column" }}
+        >
+          <TableRow
+            style={{ width: "100%", display: "flex", flexDirection: "column" }}
+          >
+            <EditingCells
+              colsNames={colsNames}
+              values={filters}
+              handleChange={handleChange}
+              clients={clients}
+              setValues={setFilters}
+              handleDateChange={handleDateChange}
+              row={row}
+              type="form"
+            />
+          </TableRow>
+        </TableBody>
+      </Table>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={() => handleClose("cancel")} color="primary">
           Cancel
         </Button>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={() => handleClose("save")} color="primary">
           Filter
         </Button>
       </DialogActions>

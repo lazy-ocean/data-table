@@ -159,7 +159,7 @@ export const EditingCells = (props: any) => {
                 setValues({ ...values, [field]: newValue })
               }
               defaultValue={values[field]}
-              getOptionLabel={(option: string) => option}
+              getOptionLabel={(option: string) => (option ? option : "")}
               style={{ width: "100%", fontSize: 14 }}
               renderInput={(params) => (
                 <TextField
@@ -191,7 +191,9 @@ export const EditingCells = (props: any) => {
                   openTo="year"
                   name={field}
                   views={["year", "month"]}
-                  value={new Date(values[field])}
+                  value={
+                    type === "form" ? values[field] : new Date(values[field])
+                  }
                   onChange={handleDateChange}
                   //label={type === "form" ? "Termination date" : false}
                 />
