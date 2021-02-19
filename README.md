@@ -1,12 +1,64 @@
-# Getting Started with Create React App
+# React data table
 
+Test assignment for Frontend Developer position. The task was to build a data grid using React.JS.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Link
+
+[GitHub Pages](https://lazy-ocean.github.io/data-table/)
+
+## Stack and other tools
+
+- [React.JS](https://reactjs.org/): functional components and hooks
+- [Material UI](https://material-ui.com/): components library
+- [Axios](https://github.com/axios/axios): HTTP client
+- [Lodash](https://lodash.com/): utilities.
+
+## Tasks and Goals
+
+1. **Data grid**
+
+- [Table data](https://run.mocky.io/v3/6f15e3ad-bf04-4940-9b81-0f14fac8ebf2)
+- [Table config](https://run.mocky.io/v3/9700b81e-1edd-49b8-8160-736b24a989a7)
+- [Style palette](https://coolors.co/5aa9e6-d8eefd-f9f9f9-ffe45e-f50049): blue header, zebra-striped rows (white-light blue)
+- Value cell (`VALUE_1`) background:
+  - yellow, if > 2000
+  - red if > 3000
+- At the beggining of every row there's a checkbox, at the end - `Edit` button.
+
+2. **Editing**
+
+On click on `Edit` button changes on `Save`, all other edits are disabled, next row cells turns to inputs:
+
+- `DESCRIPTION`: text input
+- `SOURCE_NM`: select with "DEV", "UAT", "PROD" options
+- `CLIENT_NM`: combobox with search but the options are only from `CLIENT_NM` values
+- `TERMINATION_DT`: datepicker
+- `VALUE_3`: input, only digits.
+
+3. **Filtering**
+
+Add `Filter` button that shows modal with all the inputs from the second task and `Cancel` & `Submit` buttons. On submit data in table gets filtered using provided criteria.
+
+4. **Sorting**
+
+On click on header data in columns sorted alphabetically, next click reverses order. Sort one column at a time.
+
+## Assignment Criteria
+
+- Use of a well-documented solutions (frameworks, design systems, tools, utilities) instead of making everything from scratch
+- Modern and well-supported chosen stack
+- Complete functionality of the grid, finished tasks
+- Code readability and flexibility
+- Git mastering (best practices in commits, branching)
+- App performance
+- Well-thought-out, neat and clean interface.
+
+## Available Build Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,34 +66,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm build`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-# data-table
+Builds the app for production to the `build` and `docs` folder.
