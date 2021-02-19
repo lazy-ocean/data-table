@@ -8,9 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
-import { EditingCells } from "./editedRow";
+import { EditingCells } from "../editedComponents/EditingCells";
 
-export const FilterModal = (props: any) => {
+const FilterModal = (props: any) => {
   let row = {
     DESCRIPTION: "",
     SOURCE_NM: "",
@@ -70,9 +70,7 @@ export const FilterModal = (props: any) => {
         <DialogContentText>Choose fields to filter rows:</DialogContentText>
       </DialogContent>
       <Table>
-        <TableBody
-          style={{ width: "100%", display: "flex", flexDirection: "column" }}
-        >
+        <TableBody>
           <TableRow
             style={{ width: "100%", display: "flex", flexDirection: "column" }}
           >
@@ -100,3 +98,5 @@ export const FilterModal = (props: any) => {
     </Dialog>
   );
 };
+
+export default FilterModal;

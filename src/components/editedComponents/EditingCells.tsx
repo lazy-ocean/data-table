@@ -1,64 +1,17 @@
-import React, { useState } from "react";
-import TableRow from "@material-ui/core/TableRow";
+import React from "react";
 import TableCell from "@material-ui/core/TableCell";
-import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { StyledEditButton, theme, useStyles } from "./styled";
 import { ThemeProvider } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 
-const _ = require("lodash");
+import DateFnsUtils from "@date-io/date-fns";
+import { theme, useStyles } from "../styled";
+
+import _ from "lodash";
 
 const sourceMap = ["DEV", "UAT", "PROD"];
-
-export const EditedRow = (props: any) => {
-  let { row, colsNames, saveData, clients } = props;
-  let [values, setValues] = useState(row);
-
-  const handleDateChange = (date: Date | null) => {
-    let month = (date!.getMonth() + 1).toString();
-    let year = date?.getFullYear();
-    let newDate = `${year}-${month.padStart(2, "0")}`;
-    setValues({ ...values, TERMINATION_DT: newDate });
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    let { name, value } = target;
-    setValues({ ...values, [name]: value });
-  };
-
-  return (
-    <TableRow key={row.id}>
-      <TableCell padding="checkbox">
-        <Checkbox style={{ color: "#5AA9E6" }} disabled />
-      </TableCell>
-      <EditingCells
-        colsNames={colsNames}
-        values={values}
-        handleChange={handleChange}
-        clients={clients}
-        setValues={setValues}
-        handleDateChange={handleDateChange}
-        row={row}
-        type="table"
-      />
-      <TableCell key={row.id} padding="checkbox">
-        <StyledEditButton
-          variant="contained"
-          color="primary"
-          onClick={() => saveData(values)}
-        >
-          Save
-        </StyledEditButton>
-      </TableCell>
-    </TableRow>
-  );
-};
-
 export const EditingCells = (props: any) => {
   let {
     colsNames,
@@ -96,7 +49,6 @@ export const EditingCells = (props: any) => {
               InputProps={{ style: { fontSize: 14 } }}
               InputLabelProps={{ style: { fontSize: 14 } }}
               onChange={handleChange}
-              //label={type === "form" ? "Item description" : false}
               placeholder={type === "form" ? "Lorem ipsums" : ""}
             />
           </TableCell>
@@ -123,7 +75,6 @@ export const EditingCells = (props: any) => {
               SelectProps={{
                 native: true,
               }}
-              //label={type === "form" ? "Source" : false}
             >
               {type === "form"
                 ? ["All", ...sourceMap].map((source) => (
@@ -165,7 +116,6 @@ export const EditingCells = (props: any) => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  //label={type === "form" ? "Client name" : false}
                   placeholder={type === "form" ? "KOG" : ""}
                 />
               )}
@@ -195,7 +145,6 @@ export const EditingCells = (props: any) => {
                     type === "form" ? values[field] : new Date(values[field])
                   }
                   onChange={handleDateChange}
-                  //label={type === "form" ? "Termination date" : false}
                 />
               </ThemeProvider>
             </MuiPickersUtilsProvider>
@@ -225,7 +174,6 @@ export const EditingCells = (props: any) => {
               }}
               name={field}
               onChange={handleChange}
-              //label={type === "form" ? "Max range" : false}
               placeholder={type === "form" ? "0 - 10000000000" : ""}
             />
           </TableCell>
