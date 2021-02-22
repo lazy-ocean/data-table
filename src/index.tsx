@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./components/App";
-import reportWebVitals from "./reportWebVitals";
-
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./components/styled";
+import App from "./components/App";
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>

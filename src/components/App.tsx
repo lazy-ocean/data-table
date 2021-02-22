@@ -1,15 +1,14 @@
 import "../App.css";
-import { getRows, getColumns } from "./data";
-import { useStyles } from "./styled";
-import TableHeader from "./table/TableHeader";
-import { TableFooterC as TableFooter } from "./table/TableFooter";
-import { TableBodyC as TableBody } from "./table/TableBody";
-
 import React, { useEffect, useState } from "react";
-
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
+
+import { getRows, getColumns } from "./data";
+import { useStyles } from "./styled";
+import TableHeader from "./table/TableHeader";
+import TableFooter from "./table/TableFooter";
+import TableBody from "./table/TableBody";
 
 let Order: "asc" | "desc";
 
@@ -28,18 +27,18 @@ const App = () => {
 
   useEffect(() => {
     const colsData = async () => {
-      let cols = await getColumns();
+      const cols = await getColumns();
       setColumnsData(cols);
     };
     const rowsData = async () => {
-      let row = await getRows();
+      const row = await getRows();
       setRowsData(row);
     };
     colsData();
     rowsData();
   }, []);
 
-  let clients = rows.map((row) => row["CLIENT_NM"]);
+  const clients = rows.map((row) => row.CLIENT_NM);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -47,7 +46,7 @@ const App = () => {
           <Table
             aria-label="simple table"
             className={classes.table}
-            size={"small"}
+            size="small"
             style={{ fontSize: "10px" }}
           >
             <TableHeader

@@ -4,22 +4,22 @@ import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import { StyledEditButton } from "../styled";
 
-import { EditingCells } from "./EditingCells";
+import EditingCells from "./EditingCells";
 
 const EditedRow = (props: any) => {
-  let { row, colsNames, saveData, clients } = props;
-  let [values, setValues] = useState(row);
+  const { row, colsNames, saveData, clients } = props;
+  const [values, setValues] = useState(row);
 
   const handleDateChange = (date: Date | null) => {
-    let month = (date!.getMonth() + 1).toString();
-    let year = date?.getFullYear();
-    let newDate = `${year}-${month.padStart(2, "0")}`;
+    const month = (date!.getMonth() + 1).toString();
+    const year = date?.getFullYear();
+    const newDate = `${year}-${month.padStart(2, "0")}`;
     setValues({ ...values, TERMINATION_DT: newDate });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
-    let { name, value } = target;
+    const { name, value } = target;
     setValues({ ...values, [name]: value });
   };
 

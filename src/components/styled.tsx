@@ -44,14 +44,14 @@ export const theme = createMuiTheme({
   },
 });
 
-export const StyledTableCell = withStyles((theme) => ({
+export const StyledTableCell = withStyles(() => ({
   head: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
 }))(TableCell);
 
-export const StyledTableRow = withStyles((theme) => ({
+export const StyledTableRow = withStyles(() => ({
   root: {
     "&:nth-of-type(even)": {
       backgroundColor: "#D8EEFD",
@@ -62,19 +62,19 @@ export const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export const StyledYellowCell = withStyles((theme) => ({
+export const StyledYellowCell = withStyles(() => ({
   body: {
     backgroundColor: "#FFE45E",
   },
 }))(TableCell);
 
-export const StyledRedCell = withStyles((theme) => ({
+export const StyledRedCell = withStyles(() => ({
   body: {
     backgroundColor: "#F50049",
   },
 }))(TableCell);
 
-export const StyledTableSortLabel = withStyles((theme) => ({
+export const StyledTableSortLabel = withStyles(() => ({
   root: {
     fontSize: "14px",
     "&:hover, &:focus": {
@@ -89,7 +89,7 @@ export const StyledTableSortLabel = withStyles((theme) => ({
   },
 }))(TableSortLabel);
 
-export const StyledEditButton = withStyles((theme) => ({
+export const StyledEditButton = withStyles(() => ({
   root: {
     color: theme.palette.primary.main,
     backgroundColor: "white",
@@ -101,7 +101,7 @@ export const StyledEditButton = withStyles((theme) => ({
   },
 }))(Button);
 
-export const StyledFilterButton = withStyles((theme) => ({
+export const StyledFilterButton = withStyles(() => ({
   root: {
     color: "white",
     alignSelf: "center",

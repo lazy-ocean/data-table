@@ -9,8 +9,8 @@ import { TypographySelected } from "../miscellaneous/typography";
 import { StyledFilterButton } from "../styled";
 import FilterModal from "../miscellaneous/Modal";
 
-export const TableFooterC = (props: any) => {
-  let {
+const TableFooterC = (props: any) => {
+  const {
     rows,
     rowsPerPage,
     selected,
@@ -38,26 +38,26 @@ export const TableFooterC = (props: any) => {
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
-    page: number
+    pageNum: number
   ) => {
-    setPage(page);
+    setPage(pageNum);
   };
 
   const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newRows = e.target.value;
-    setRowsPerPage(parseInt(newRows));
+    setRowsPerPage(parseInt(newRows, 10));
     setPage(0);
   };
 
   const handleFiltering = (filterData: any) => {
-    let criteria = Object.keys(filterData).filter((key) => filterData[key]);
-    let newData = rows.filter((row: any) => {
-      return criteria.every((item) =>
+    const criteria = Object.keys(filterData).filter((key) => filterData[key]);
+    const newData = rows.filter((row: any) =>
+      criteria.every((item) =>
         item === "DESCRIPTION"
           ? row[item].toLowerCase().includes(filterData[item].toLowerCase())
           : filterData[item] === row[item]
-      );
-    });
+      )
+    );
     setRowsData(newData);
     openFilterModal(false);
     toggleFilter(true);
@@ -111,3 +111,5 @@ export const TableFooterC = (props: any) => {
     </Table>
   );
 };
+
+export default TableFooterC;

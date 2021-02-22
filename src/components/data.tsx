@@ -1,5 +1,5 @@
 import _ from "lodash";
-const axios = require("axios").default;
+import axios from "axios";
 
 export const getRows = (): Promise<any> => {
   const promise = axios.get(
@@ -7,11 +7,11 @@ export const getRows = (): Promise<any> => {
   );
   const rows = promise.then((response: any) =>
     response.data.items.reduce((acc: Array<any>, item: any) => {
-      let str = item["UPDATE_TIMESTAMP"].slice(0, -7);
-      let date = new Date(str);
-      let data = {
+      const str = item.UPDATE_TIMESTAMP.slice(0, -7);
+      const date = new Date(str);
+      const data = {
         ...item,
-        id: item["ID"],
+        id: item.ID,
         UPDATE_TIMESTAMP: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
       };
       acc.push(data);
@@ -27,8 +27,8 @@ export const getColumns = (): Promise<any> => {
   );
   const columns = promise.then((response: any) =>
     Object.keys(response.data.config).reduce((acc: Array<any>, key) => {
-      let label = response.data.config[key].label;
-      let data = {
+      const { label } = response.data.config[key];
+      const data = {
         ...response.data.config[key],
         field: key,
         headerName: label,

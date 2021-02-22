@@ -1,10 +1,11 @@
+import React from "react";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { StyledTableCell, StyledTableSortLabel } from "../styled";
 import Checkbox from "@material-ui/core/Checkbox";
+import { StyledTableCell, StyledTableSortLabel } from "../styled";
 
 const TableHeader = (props: any) => {
-  let {
+  const {
     columns,
     rows,
     orderBy,
@@ -60,7 +61,7 @@ const TableHeader = (props: any) => {
             </StyledTableSortLabel>
           </StyledTableCell>
         ))}
-        <StyledTableCell padding="checkbox"></StyledTableCell>
+        <StyledTableCell padding="checkbox" />
       </TableRow>
     </TableHead>
   );

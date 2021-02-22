@@ -5,15 +5,13 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import { ThemeProvider } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
-
 import DateFnsUtils from "@date-io/date-fns";
+import _ from "lodash";
 import { theme, useStyles } from "../styled";
 
-import _ from "lodash";
-
 const sourceMap = ["DEV", "UAT", "PROD"];
-export const EditingCells = (props: any) => {
-  let {
+const EditingCells = (props: any) => {
+  const {
     colsNames,
     values,
     handleChange,
@@ -110,10 +108,11 @@ export const EditingCells = (props: any) => {
                 setValues({ ...values, [field]: newValue })
               }
               defaultValue={values[field]}
-              getOptionLabel={(option: string) => (option ? option : "")}
+              getOptionLabel={(option: string) => option || ""}
               style={{ width: "100%", fontSize: 14 }}
               renderInput={(params) => (
                 <TextField
+                  /* eslint-disable react/jsx-props-no-spreading */
                   {...params}
                   variant="outlined"
                   placeholder={type === "form" ? "KOG" : ""}
@@ -183,3 +182,5 @@ export const EditingCells = (props: any) => {
     }
   });
 };
+
+export default EditingCells;

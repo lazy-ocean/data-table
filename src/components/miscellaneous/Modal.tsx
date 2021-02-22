@@ -8,10 +8,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
-import { EditingCells } from "../editedComponents/EditingCells";
+import EditingCells from "../editedComponents/EditingCells";
 
 const FilterModal = (props: any) => {
-  let row = {
+  const row = {
     DESCRIPTION: "",
     SOURCE_NM: "",
     CLIENT_NM: null,
@@ -19,8 +19,8 @@ const FilterModal = (props: any) => {
     VALUE_3: null,
   };
   const { open, onClose, clients, filterData } = props;
-  let [filters, setFilters] = useState(row);
-  let colsNames = [
+  const [filters, setFilters] = useState(row);
+  const colsNames = [
     "DESCRIPTION",
     "SOURCE_NM",
     "CLIENT_NM",
@@ -39,16 +39,16 @@ const FilterModal = (props: any) => {
   };
 
   const handleDateChange = (date: Date | null) => {
-    let month = (date!.getMonth() + 1).toString();
-    let year = date?.getFullYear();
-    let newDate = `${year}-${month.padStart(2, "0")}`;
+    const month = (date!.getMonth() + 1).toString();
+    const year = date?.getFullYear();
+    const newDate = `${year}-${month.padStart(2, "0")}`;
     // @ts-ignore
     setFilters({ ...filters, TERMINATION_DT: newDate });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
-    let { name, value } = target;
+    const { name, value } = target;
     setFilters({ ...filters, [name]: value });
   };
   return (
