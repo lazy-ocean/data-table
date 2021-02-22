@@ -15,6 +15,9 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint", "prettier", "jest"],
   rules: {
+    "no-shadow": "off",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-shadow": "error",
     "prettier/prettier": ["error"],
     "import/extensions": "off",
     "import/no-unresolved": "off",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -12,6 +12,14 @@ import {
 import EditedRow from "../editedComponents/EditedRow";
 import { TypographyNoFilters } from "../miscellaneous/typography";
 import Spinner from "../miscellaneous/Spinner";
+
+const stableSort = (array: any[], orderBy: string, order: string): any[] => {
+  // @ts-ignore
+  const sorted = _.sortBy(array, (obj) =>
+    typeof obj[orderBy] === "string" ? obj[orderBy].toLowerCase() : obj[orderBy]
+  );
+  return order === "asc" ? sorted : sorted.reverse();
+};
 
 const TableBodyC = (props: any) => {
   const {
@@ -30,18 +38,9 @@ const TableBodyC = (props: any) => {
     activeFilter,
   } = props;
 
-  function stableSort(array: any[]): any[] {
-    // @ts-ignore
-    const sorted = _.sortBy(array, (obj) =>
-      typeof obj[orderBy] === "string"
-        ? obj[orderBy].toLowerCase()
-        : obj[orderBy]
-    );
-    return order === "asc" ? sorted : sorted.reverse();
-  }
-
-  const colsNames = columns.map((col: any) => col.field);
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
+  const colsNames = useMemo(() => columns.map((col: any) => col.field), [
+    columns,
+  ]);
 
   const handleSelect = (id: string) => {
     if (selected.includes(id)) {
@@ -69,12 +68,15 @@ const TableBodyC = (props: any) => {
   return (
     <TableBody>
       {rows.length ? (
-        stableSort(rows)
+        stableSort(rows, orderBy, order)
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row) => {
-            const isItemSelected = isSelected(row.id);
+            const isItemSelected = selected.indexOf(row.id) !== -1;
             return edited !== row.id ? (
-              <StyledTableRow key={row.id} selected={isItemSelected}>
+              <StyledTableRow
+                key={row.id}
+                selected={selected.indexOf(row.id) !== -1}
+              >
                 <TableCell padding="checkbox">
                   <Checkbox
                     style={{ color: "#5AA9E6" }}
@@ -92,6 +94,15 @@ const TableBodyC = (props: any) => {
                       <StyledRedCell key={_.uniqueId()}>
                         {row[field]}
                       </StyledRedCell>
+                    );
+                  }
+                  if (field === "UPDATE_TIMESTAMP") {
+                    /* temporary fix */
+                    return (
+                      <TableCell key={_.uniqueId()}>
+                        {row[field].toLocaleDateString()}{" "}
+                        {row[field].toLocaleTimeString()}
+                      </TableCell>
                     );
                   }
                   return <TableCell key={_.uniqueId()}>{row[field]}</TableCell>;

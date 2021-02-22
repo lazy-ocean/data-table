@@ -8,8 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import DateFnsUtils from "@date-io/date-fns";
 import _ from "lodash";
 import { theme, useStyles } from "../styled";
+import { Source } from "../data";
 
-const sourceMap = ["DEV", "UAT", "PROD"];
 const EditingCells = (props: any) => {
   const {
     colsNames,
@@ -75,12 +75,12 @@ const EditingCells = (props: any) => {
               }}
             >
               {type === "form"
-                ? ["All", ...sourceMap].map((source) => (
+                ? ["All", ...Object.values(Source)].map((source) => (
                     <option key={source} value={source}>
                       {source}
                     </option>
                   ))
-                : sourceMap.map((source) => (
+                : Object.values(Source).map((source) => (
                     <option key={source} value={source}>
                       {source}
                     </option>
@@ -178,7 +178,9 @@ const EditingCells = (props: any) => {
           </TableCell>
         );
       default:
-        return <TableCell key={_.uniqueId()}>{row[field]}</TableCell>;
+        return (
+          <TableCell key={_.uniqueId()}>{row[field].toString()}</TableCell>
+        );
     }
   });
 };

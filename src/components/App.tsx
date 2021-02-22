@@ -1,10 +1,10 @@
 import "../App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 
-import { getRows, getColumns } from "./data";
+import { getRows, getColumns, Data, Config } from "./data";
 import { useStyles } from "./styled";
 import TableHeader from "./table/TableHeader";
 import TableFooter from "./table/TableFooter";
@@ -14,8 +14,8 @@ let Order: "asc" | "desc";
 
 const App = () => {
   const classes = useStyles();
-  const [rows, setRowsData] = useState<any[]>([]);
-  const [columns, setColumnsData] = useState<any[]>([]);
+  const [rows, setRowsData] = useState<Data[] | []>([]);
+  const [columns, setColumnsData] = useState<Config[] | []>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [order, setOrder] = React.useState<typeof Order>("asc");
@@ -26,19 +26,18 @@ const App = () => {
   const [activeFilter, toggleFilter] = React.useState<boolean>(false);
 
   useEffect(() => {
-    const colsData = async () => {
+    (async () => {
       const cols = await getColumns();
       setColumnsData(cols);
-    };
-    const rowsData = async () => {
-      const row = await getRows();
-      setRowsData(row);
-    };
-    colsData();
-    rowsData();
+      const rowData = await getRows();
+      setRowsData(rowData);
+    })();
   }, []);
 
-  const clients = rows.map((row) => row.CLIENT_NM);
+  const clients = useMemo(
+    () => (rows as Data[]).map((row: Data) => row.CLIENT_NM),
+    [rows]
+  );
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
