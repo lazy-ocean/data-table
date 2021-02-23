@@ -12,6 +12,7 @@ export enum DataType {
   NUMERIC = "NUMERIC",
   DATE = "DATE",
   TIMESTAMP = "TIMESTAMP",
+  LIST = "LIST",
 }
 
 export interface Data {

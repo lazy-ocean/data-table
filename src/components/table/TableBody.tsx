@@ -9,7 +9,7 @@ import {
   StyledYellowCell,
   StyledEditButton,
 } from "../styled";
-import EditedRow from "../editedComponents/EditedRow";
+import EditingRow from "../editedComponents/EditingRow";
 import { TypographyNoFilters } from "../miscellaneous/typography";
 import Spinner from "../miscellaneous/Spinner";
 
@@ -119,7 +119,7 @@ const TableBodyC = (props: any) => {
                 </TableCell>
               </StyledTableRow>
             ) : (
-              <EditedRow
+              <EditingRow
                 row={row}
                 colsNames={colsNames}
                 saveData={(data: any) => handleEditing(data)}

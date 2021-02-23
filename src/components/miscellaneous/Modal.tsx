@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
-import EditingCells from "../editedComponents/EditingCells";
+import EditingCell from "../editedComponents/EditingCells";
 
 const FilterModal = (props: any) => {
   const row = {
@@ -20,7 +20,7 @@ const FilterModal = (props: any) => {
   };
   const { open, onClose, clients, filterData } = props;
   const [filters, setFilters] = useState(row);
-  const colsNames = [
+  const filtersFields = [
     "DESCRIPTION",
     "SOURCE_NM",
     "CLIENT_NM",
@@ -74,16 +74,19 @@ const FilterModal = (props: any) => {
           <TableRow
             style={{ width: "100%", display: "flex", flexDirection: "column" }}
           >
-            <EditingCells
-              colsNames={colsNames}
-              values={filters}
-              handleChange={handleChange}
-              clients={clients}
-              setValues={setFilters}
-              handleDateChange={handleDateChange}
-              row={row}
-              type="form"
-            />
+            {filtersFields.map((field: string) => (
+              <EditingCell
+                field={field}
+                values={filters}
+                handleChange={handleChange}
+                clients={clients}
+                setValues={setFilters}
+                handleDateChange={handleDateChange}
+                row={row}
+                type="form"
+                key={field}
+              />
+            ))}
           </TableRow>
         </TableBody>
       </Table>

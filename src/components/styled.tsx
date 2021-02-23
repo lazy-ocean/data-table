@@ -8,17 +8,10 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Button from "@material-ui/core/Button";
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     fontSize: "11px",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
   },
   visuallyHidden: {
     border: 0,
@@ -40,6 +33,18 @@ export const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#5AA9E6",
+    },
+  },
+  overrides: {
+    MuiInputBase: {
+      root: {
+        fontSize: 14,
+      },
+    },
+    MuiCheckbox: {
+      root: {
+        color: "#5AA9E6",
+      },
     },
   },
 });
