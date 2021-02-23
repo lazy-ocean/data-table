@@ -4,9 +4,9 @@ import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import { StyledEditButton } from "../styled";
 
-import EditingCells from "./EditingCells";
+import EditingCell from "./EditingCells";
 
-const EditedRow = (props: any) => {
+const EditingRow = (props: any) => {
   const { row, colsNames, saveData, clients } = props;
   const [values, setValues] = useState(row);
 
@@ -25,19 +25,22 @@ const EditedRow = (props: any) => {
 
   return (
     <TableRow key={row.id}>
-      <TableCell padding="checkbox">
-        <Checkbox style={{ color: "#5AA9E6" }} disabled />
+      <TableCell key="checkbox" padding="checkbox">
+        <Checkbox disabled />
       </TableCell>
-      <EditingCells
-        colsNames={colsNames}
-        values={values}
-        handleChange={handleChange}
-        clients={clients}
-        setValues={setValues}
-        handleDateChange={handleDateChange}
-        row={row}
-        type="table"
-      />
+      {colsNames.map((field: string) => (
+        <EditingCell
+          field={field}
+          values={values}
+          handleChange={handleChange}
+          clients={clients}
+          setValues={setValues}
+          handleDateChange={handleDateChange}
+          row={row}
+          type="table"
+          key={field}
+        />
+      ))}
       <TableCell key={row.id} padding="checkbox">
         <StyledEditButton
           variant="contained"
@@ -51,4 +54,4 @@ const EditedRow = (props: any) => {
   );
 };
 
-export default EditedRow;
+export default EditingRow;
