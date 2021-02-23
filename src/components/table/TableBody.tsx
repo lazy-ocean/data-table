@@ -79,7 +79,6 @@ const TableBodyC = (props: any) => {
               >
                 <TableCell padding="checkbox">
                   <Checkbox
-                    style={{ color: "#5AA9E6" }}
                     checked={isItemSelected}
                     onClick={() => handleSelect(row.id)}
                   />

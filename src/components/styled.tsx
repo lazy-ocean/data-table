@@ -33,17 +33,50 @@ export const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#5AA9E6",
+      light: "#D8EEFD",
+      dark: "#BADCF3",
+    },
+    secondary: {
+      main: "#5AA9E6",
+    },
+    warning: {
+      main: "#FFE45E",
+    },
+    error: {
+      main: "#F50049",
+      contrastText: "#FFFFFF",
     },
   },
   overrides: {
     MuiInputBase: {
       root: {
-        fontSize: 14,
+        fontSize: "14px",
       },
     },
     MuiCheckbox: {
       root: {
         color: "#5AA9E6",
+      },
+    },
+    MuiTableFooter: {
+      root: {
+        display: "block",
+      },
+    },
+    MuiTablePagination: {
+      root: {
+        borderBottom: "none",
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        paddingLeft: "15px",
+        overflowY: "unset",
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        padding: "15px",
       },
     },
   },
@@ -59,23 +92,31 @@ export const StyledTableCell = withStyles(() => ({
 export const StyledTableRow = withStyles(() => ({
   root: {
     "&:nth-of-type(even)": {
-      backgroundColor: "#D8EEFD",
+      backgroundColor: theme.palette.primary.light,
     },
     "&.Mui-selected, &.Mui-selected:hover": {
-      backgroundColor: "#BADCF3",
+      backgroundColor: theme.palette.primary.dark,
     },
   },
 }))(TableRow);
 
 export const StyledYellowCell = withStyles(() => ({
   body: {
-    backgroundColor: "#FFE45E",
+    backgroundColor: theme.palette.warning.main,
   },
 }))(TableCell);
 
 export const StyledRedCell = withStyles(() => ({
   body: {
-    backgroundColor: "#F50049",
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+  },
+}))(TableCell);
+
+export const StyledFooterCell = withStyles(() => ({
+  root: {
+    borderBottom: "none",
+    padding: "8px",
   },
 }))(TableCell);
 
@@ -83,10 +124,10 @@ export const StyledTableSortLabel = withStyles(() => ({
   root: {
     fontSize: "14px",
     "&:hover, &:focus": {
-      color: "white",
+      color: theme.palette.common.white,
     },
     "&.MuiTableSortLabel-active": {
-      color: "white",
+      color: theme.palette.common.white,
     },
   },
   icon: {
@@ -97,22 +138,22 @@ export const StyledTableSortLabel = withStyles(() => ({
 export const StyledEditButton = withStyles(() => ({
   root: {
     color: theme.palette.primary.main,
-    backgroundColor: "white",
-    border: "1px solid #5AA9E6",
+    backgroundColor: theme.palette.common.white,
+    border: `1px solid ${theme.palette.primary.main}`,
     "&:hover": {
-      backgroundColor: "#d9efff",
-      border: "1px solid #5AA9E6",
+      backgroundColor: theme.palette.primary.light,
+      border: `1px solid ${theme.palette.primary.main}`,
     },
   },
 }))(Button);
 
 export const StyledFilterButton = withStyles(() => ({
   root: {
-    color: "white",
+    color: theme.palette.common.white,
     alignSelf: "center",
     "&:hover": {
-      backgroundColor: "#5AA9E6",
+      backgroundColor: theme.palette.primary.main,
     },
-    marginRight: 10,
+    marginRight: "10px",
   },
 }))(Button);

@@ -63,10 +63,8 @@ const FilterModal = (props: any) => {
         },
       }}
     >
-      <DialogTitle id="form-dialog-title" style={{ padding: "15px" }}>
-        Data filters
-      </DialogTitle>
-      <DialogContent style={{ paddingLeft: "15px", overflowY: "unset" }}>
+      <DialogTitle id="form-dialog-title">Data filters</DialogTitle>
+      <DialogContent>
         <DialogContentText>Choose fields to filter rows:</DialogContentText>
       </DialogContent>
       <Table>
