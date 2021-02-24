@@ -47,6 +47,12 @@ export const theme = createMuiTheme({
       contrastText: "#FFFFFF",
     },
   },
+  typography: {
+    h5: {
+      textAlign: "center",
+      margin: "30px",
+    },
+  },
   overrides: {
     MuiInputBase: {
       root: {
@@ -79,6 +85,23 @@ export const theme = createMuiTheme({
         padding: "15px",
       },
     },
+    MuiCircularProgress: {
+      root: {
+        margin: "0 50%",
+      },
+    },
+    MuiTableContainer: {
+      root: {
+        maxHeight: "94vh",
+      },
+    },
+    MuiPaper: {
+      root: {
+        "&.MuiDialog-paperScrollPaper": {
+          padding: "20px 30px",
+        },
+      },
+    },
   },
 });
 
@@ -86,6 +109,7 @@ export const StyledTableCell = withStyles(() => ({
   head: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
+    lineHeight: "1.3rem",
   },
 }))(TableCell);
 
@@ -157,3 +181,11 @@ export const StyledFilterButton = withStyles(() => ({
     marginRight: "10px",
   },
 }))(Button);
+
+export const StyledModalTableRow = withStyles(() => ({
+  root: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+}))(TableRow);

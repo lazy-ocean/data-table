@@ -27,7 +27,7 @@ const TableC = (props: any) => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="simple table" size="small">
+        <Table stickyHeader aria-label="simple table" size="small">
           <TableHeader
             columns={columns}
             rows={rows}

@@ -7,8 +7,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import EditingCell from "../editedComponents/EditingCells";
+import EditingCell from "../editingComponents/EditingCells";
+import { StyledModalTableRow } from "../styled";
 
 const FilterModal = (props: any) => {
   const row = {
@@ -56,12 +56,8 @@ const FilterModal = (props: any) => {
       open={open}
       onClose={onClose}
       aria-labelledby="form-dialog-title"
-      PaperProps={{
-        style: {
-          width: 600,
-          padding: "20px 30px",
-        },
-      }}
+      fullWidth
+      maxWidth="sm"
     >
       <DialogTitle id="form-dialog-title">Data filters</DialogTitle>
       <DialogContent>
@@ -69,9 +65,7 @@ const FilterModal = (props: any) => {
       </DialogContent>
       <Table>
         <TableBody>
-          <TableRow
-            style={{ width: "100%", display: "flex", flexDirection: "column" }}
-          >
+          <StyledModalTableRow>
             {filtersFields.map((field: string) => (
               <EditingCell
                 field={field}
@@ -85,7 +79,7 @@ const FilterModal = (props: any) => {
                 key={field}
               />
             ))}
-          </TableRow>
+          </StyledModalTableRow>
         </TableBody>
       </Table>
       <DialogActions>

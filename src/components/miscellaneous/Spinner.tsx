@@ -6,7 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 const Spinner = () => (
   <TableRow>
     <TableCell colSpan={13}>
-      <CircularProgress size={50} style={{ margin: "0 50%" }} />
+      <CircularProgress size={50} />
     </TableCell>
   </TableRow>
 );

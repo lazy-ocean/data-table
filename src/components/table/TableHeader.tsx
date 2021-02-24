@@ -48,6 +48,7 @@ const TableHeader = (props: any) => {
           <StyledTableCell
             key={column.id}
             id={column.id}
+            align={column.type === "NUMERIC" ? "right" : "left"}
             width={column.width}
             sortDirection={orderBy === column.field ? order : false}
           >

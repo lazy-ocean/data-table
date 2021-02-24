@@ -1,6 +1,5 @@
 import React from "react";
 import TableFooter from "@material-ui/core/TableFooter";
-import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import TablePagination from "@material-ui/core/TablePagination";
 import Table from "@material-ui/core/Table";
