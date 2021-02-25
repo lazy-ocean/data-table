@@ -24,7 +24,15 @@ const TableFooterC = (props: any) => {
     setRowsPerPage,
   } = props;
 
+  const filterRow = {
+    DESCRIPTION: "",
+    SOURCE_NM: "",
+    CLIENT_NM: null,
+    TERMINATION_DT: null,
+    VALUE_3: null,
+  };
   const [filterModal, openFilterModal] = React.useState<boolean>(false);
+  const [filters, setFilters] = React.useState(filterRow);
 
   const handleModalOpen = () => {
     openFilterModal(true);
@@ -32,7 +40,6 @@ const TableFooterC = (props: any) => {
 
   const handleModalClose = () => {
     openFilterModal(false);
-    toggleFilter(false);
   };
 
   const handleChangePage = (
@@ -68,6 +75,8 @@ const TableFooterC = (props: any) => {
         <FilterModal
           clients={clients}
           open={filterModal}
+          filters={filters}
+          setFilters={setFilters}
           onClose={handleModalClose}
           filterData={(data: any) => handleFiltering(data)}
         />
@@ -91,6 +100,7 @@ const TableFooterC = (props: any) => {
                   Promise.resolve(getRows())
                     .then((v) => setRowsData(v))
                     .then(() => toggleFilter(false))
+                    .then(() => setFilters(filterRow))
                 }
               >
                 Clear filters

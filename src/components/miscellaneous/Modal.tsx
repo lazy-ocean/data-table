@@ -18,8 +18,8 @@ const FilterModal = (props: any) => {
     TERMINATION_DT: null,
     VALUE_3: null,
   };
-  const { open, onClose, clients, filterData } = props;
-  const [filters, setFilters] = useState(row);
+  const { open, onClose, clients, filterData, filters, setFilters } = props;
+  // const [filters, setFilters] = useState(row);
   const filtersFields = [
     "DESCRIPTION",
     "SOURCE_NM",
@@ -30,10 +30,8 @@ const FilterModal = (props: any) => {
 
   const handleClose = (arg: string) => {
     if (arg === "cancel") {
-      setFilters(row);
       onClose();
     } else {
-      setFilters(row);
       filterData(filters);
     }
   };

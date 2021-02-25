@@ -27,7 +27,7 @@ export const TypographySelected = (props: { selected: any[] }) => {
 export const TypographyNoFilters = () => (
   <TableRow>
     <TableCell colSpan={13}>
-      <Typography variant="h5">No items matching set filters</Typography>
+      <Typography variant="h3">No items matching set filters</Typography>
     </TableCell>
   </TableRow>
 );
