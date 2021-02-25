@@ -7,7 +7,7 @@ import { StyledEditButton } from "../styled";
 import EditingCell from "./EditingCells";
 
 const EditingRow = (props: any) => {
-  const { row, colsNames, saveData, clients } = props;
+  const { row, columnsInfo, saveData, clients } = props;
   const [values, setValues] = useState(row);
 
   const handleDateChange = (date: Date | null) => {
@@ -28,19 +28,22 @@ const EditingRow = (props: any) => {
       <TableCell key="checkbox" padding="checkbox">
         <Checkbox disabled />
       </TableCell>
-      {colsNames.map((field: string) => (
-        <EditingCell
-          field={field}
-          values={values}
-          handleChange={handleChange}
-          clients={clients}
-          setValues={setValues}
-          handleDateChange={handleDateChange}
-          row={row}
-          type="table"
-          key={field}
-        />
-      ))}
+      {(columnsInfo as Array<{ field: string; type: string }>).map(
+        ({ field, type }) => (
+          <EditingCell
+            field={field}
+            displayType={type}
+            values={values}
+            handleChange={handleChange}
+            clients={clients}
+            setValues={setValues}
+            handleDateChange={handleDateChange}
+            row={row}
+            view="table"
+            key={field}
+          />
+        )
+      )}
       <TableCell key={row.id} padding="checkbox">
         <StyledEditButton
           variant="contained"

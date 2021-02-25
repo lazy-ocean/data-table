@@ -1,12 +1,11 @@
 import React from "react";
 import TableFooter from "@material-ui/core/TableFooter";
-import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import TablePagination from "@material-ui/core/TablePagination";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import { TypographySelected } from "../miscellaneous/typography";
-import { StyledFilterButton } from "../styled";
+import { StyledFilterButton, StyledFooterCell } from "../styled";
 import FilterModal from "../miscellaneous/Modal";
 
 const TableFooterC = (props: any) => {
@@ -65,7 +64,7 @@ const TableFooterC = (props: any) => {
 
   return (
     <Table>
-      <TableFooter style={{ display: "block" }}>
+      <TableFooter>
         <FilterModal
           clients={clients}
           open={filterModal}
@@ -74,7 +73,7 @@ const TableFooterC = (props: any) => {
         />
         <TableRow style={{ display: "flex" }}>
           <TypographySelected selected={selected} />
-          <TableCell style={{ borderBottom: "none", padding: 8 }}>
+          <StyledFooterCell>
             <StyledFilterButton
               variant="contained"
               color="primary"
@@ -97,14 +96,13 @@ const TableFooterC = (props: any) => {
                 Clear filters
               </Button>
             )}
-          </TableCell>
+          </StyledFooterCell>
           <TablePagination
             count={rows.length}
             rowsPerPage={rowsPerPage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             page={page}
             onChangePage={handleChangePage}
-            style={{ borderBottom: "none" }}
           />
         </TableRow>
       </TableFooter>

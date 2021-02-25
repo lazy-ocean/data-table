@@ -9,7 +9,7 @@ import {
   StyledYellowCell,
   StyledEditButton,
 } from "../styled";
-import EditingRow from "../editedComponents/EditingRow";
+import EditingRow from "../editingComponents/EditingRow";
 import { TypographyNoFilters } from "../miscellaneous/typography";
 import Spinner from "../miscellaneous/Spinner";
 
@@ -38,9 +38,10 @@ const TableBodyC = (props: any) => {
     activeFilter,
   } = props;
 
-  const colsNames = useMemo(() => columns.map((col: any) => col.field), [
-    columns,
-  ]);
+  const columnsInfo = useMemo(
+    () => columns.map((col: any) => ({ field: col.field, type: col.type })),
+    [columns]
+  );
 
   const handleSelect = (id: string) => {
     if (selected.includes(id)) {
@@ -79,34 +80,42 @@ const TableBodyC = (props: any) => {
               >
                 <TableCell padding="checkbox">
                   <Checkbox
-                    style={{ color: "#5AA9E6" }}
                     checked={isItemSelected}
                     onClick={() => handleSelect(row.id)}
                   />
                 </TableCell>
-                {colsNames.map((field: string) => {
-                  if (field === "VALUE_1" && row[field] > 2000) {
-                    return row[field] < 3000 ? (
-                      <StyledYellowCell key={_.uniqueId()}>
-                        {row[field]}
-                      </StyledYellowCell>
-                    ) : (
-                      <StyledRedCell key={_.uniqueId()}>
-                        {row[field]}
-                      </StyledRedCell>
-                    );
-                  }
-                  if (field === "UPDATE_TIMESTAMP") {
-                    /* temporary fix */
+                {(columnsInfo as Array<{ field: string; type: string }>).map(
+                  ({ field, type }) => {
+                    if (field === "VALUE_1" && row[field] > 2000) {
+                      return row[field] < 3000 ? (
+                        <StyledYellowCell key={_.uniqueId()} align="right">
+                          {row[field]}
+                        </StyledYellowCell>
+                      ) : (
+                        <StyledRedCell key={_.uniqueId()} align="right">
+                          {row[field]}
+                        </StyledRedCell>
+                      );
+                    }
+                    if (field === "UPDATE_TIMESTAMP") {
+                      /* temporary fix */
+                      return (
+                        <TableCell key={_.uniqueId()}>
+                          {row[field].toLocaleDateString()}{" "}
+                          {row[field].toLocaleTimeString()}
+                        </TableCell>
+                      );
+                    }
                     return (
-                      <TableCell key={_.uniqueId()}>
-                        {row[field].toLocaleDateString()}{" "}
-                        {row[field].toLocaleTimeString()}
+                      <TableCell
+                        key={_.uniqueId()}
+                        align={type === "NUMERIC" ? "right" : "left"}
+                      >
+                        {row[field]}
                       </TableCell>
                     );
                   }
-                  return <TableCell key={_.uniqueId()}>{row[field]}</TableCell>;
-                })}
+                )}
                 <TableCell key={row.id} padding="checkbox">
                   <StyledEditButton
                     variant="outlined"
@@ -121,7 +130,7 @@ const TableBodyC = (props: any) => {
             ) : (
               <EditingRow
                 row={row}
-                colsNames={colsNames}
+                columnsInfo={columnsInfo}
                 saveData={(data: any) => handleEditing(data)}
                 clients={clients}
                 key={row.id}
