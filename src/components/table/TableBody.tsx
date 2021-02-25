@@ -78,7 +78,7 @@ const TableBodyC = (props: any) => {
                 key={row.id}
                 selected={selected.indexOf(row.id) !== -1}
               >
-                <TableCell padding="checkbox">
+                <TableCell padding="checkbox" key={`checkbox-${row.id}`}>
                   <Checkbox
                     checked={isItemSelected}
                     onClick={() => handleSelect(row.id)}
@@ -88,11 +88,14 @@ const TableBodyC = (props: any) => {
                   ({ field, type }) => {
                     if (field === "VALUE_1" && row[field] > 2000) {
                       return row[field] < 3000 ? (
-                        <StyledYellowCell key={_.uniqueId()} align="right">
+                        <StyledYellowCell
+                          key={`${field}-${row.id}`}
+                          align="right"
+                        >
                           {row[field]}
                         </StyledYellowCell>
                       ) : (
-                        <StyledRedCell key={_.uniqueId()} align="right">
+                        <StyledRedCell key={`${field}-${row.id}`} align="right">
                           {row[field]}
                         </StyledRedCell>
                       );
@@ -100,7 +103,7 @@ const TableBodyC = (props: any) => {
                     if (field === "UPDATE_TIMESTAMP") {
                       /* temporary fix */
                       return (
-                        <TableCell key={_.uniqueId()}>
+                        <TableCell key={`${field}-${row.id}`}>
                           {row[field].toLocaleDateString()}{" "}
                           {row[field].toLocaleTimeString()}
                         </TableCell>
@@ -108,7 +111,7 @@ const TableBodyC = (props: any) => {
                     }
                     return (
                       <TableCell
-                        key={_.uniqueId()}
+                        key={`${field}-${row.id}`}
                         align={type === "NUMERIC" ? "right" : "left"}
                       >
                         {row[field]}
@@ -116,7 +119,7 @@ const TableBodyC = (props: any) => {
                     );
                   }
                 )}
-                <TableCell key={row.id} padding="checkbox">
+                <TableCell key={`edit-${row.id}`} padding="checkbox">
                   <StyledEditButton
                     variant="outlined"
                     color="primary"
