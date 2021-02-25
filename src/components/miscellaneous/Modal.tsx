@@ -75,7 +75,7 @@ const FilterModal = (props: any) => {
                 setValues={setFilters}
                 handleDateChange={handleDateChange}
                 row={row}
-                type="form"
+                view="form"
                 key={field}
               />
             ))}

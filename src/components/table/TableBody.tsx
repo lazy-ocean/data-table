@@ -38,7 +38,7 @@ const TableBodyC = (props: any) => {
     activeFilter,
   } = props;
 
-  const colsNames = useMemo(
+  const columnsInfo = useMemo(
     () => columns.map((col: any) => ({ field: col.field, type: col.type })),
     [columns]
   );
@@ -84,7 +84,7 @@ const TableBodyC = (props: any) => {
                     onClick={() => handleSelect(row.id)}
                   />
                 </TableCell>
-                {(colsNames as Array<{ field: string; type: string }>).map(
+                {(columnsInfo as Array<{ field: string; type: string }>).map(
                   ({ field, type }) => {
                     if (field === "VALUE_1" && row[field] > 2000) {
                       return row[field] < 3000 ? (
@@ -130,7 +130,7 @@ const TableBodyC = (props: any) => {
             ) : (
               <EditingRow
                 row={row}
-                colsNames={colsNames}
+                columnsInfo={columnsInfo}
                 saveData={(data: any) => handleEditing(data)}
                 clients={clients}
                 key={row.id}

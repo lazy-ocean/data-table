@@ -47,13 +47,14 @@ const editingMapping: any = {
 const EditedCell = (props: any) => {
   const {
     field,
+    displayType,
     values,
     handleChange,
     clients,
     setValues,
     handleDateChange,
     row,
-    type,
+    view,
   } = props;
   const txtClasses = useStyles();
   const { inputType, placeholder, label, dataType, source = null } =
@@ -71,7 +72,7 @@ const EditedCell = (props: any) => {
           id="input-descr"
           style={{ width: "100%" }}
           onChange={handleChange}
-          placeholder={type === "form" ? placeholder : ""}
+          placeholder={view === "form" ? placeholder : ""}
         />
       );
       break;
@@ -87,7 +88,7 @@ const EditedCell = (props: any) => {
             native: true,
           }}
         >
-          {(type === "form" ? ["All", ...source] : source).map(
+          {(view === "form" ? ["All", ...source] : source).map(
             (item: string) => (
               <option key={item} value={item}>
                 {item}
@@ -113,7 +114,7 @@ const EditedCell = (props: any) => {
               /* eslint-disable react/jsx-props-no-spreading */
               {...params}
               variant="outlined"
-              placeholder={type === "form" ? placeholder : ""}
+              placeholder={view === "form" ? placeholder : ""}
             />
           )}
         />
@@ -128,7 +129,7 @@ const EditedCell = (props: any) => {
               openTo="year"
               name={field}
               views={["year", "month"]}
-              value={type === "form" ? values[field] : new Date(values[field])}
+              value={view === "form" ? values[field] : new Date(values[field])}
               onChange={handleDateChange}
             />
           </ThemeProvider>
@@ -141,8 +142,8 @@ const EditedCell = (props: any) => {
   }
 
   return (
-    <TableCell>
-      {type === "form" && (
+    <TableCell align={displayType === "NUMERIC" ? "right" : "left"}>
+      {view === "form" && (
         <Typography
           variant="subtitle1"
           gutterBottom
