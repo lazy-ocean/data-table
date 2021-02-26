@@ -9,6 +9,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import EditingCell from "../editingComponents/EditingCells";
 import { StyledModalTableRow } from "../styled";
+import { filtersFieldsUtils } from "../utils";
 
 const FilterModal = (props: any) => {
   const {
@@ -20,13 +21,6 @@ const FilterModal = (props: any) => {
     setFilters,
     row,
   } = props;
-  const filtersFields = [
-    "DESCRIPTION",
-    "SOURCE_NM",
-    "CLIENT_NM",
-    "TERMINATION_DT",
-    "VALUE_3",
-  ];
 
   const handleClose = (arg: string) => {
     if (arg === "cancel") {
@@ -64,7 +58,7 @@ const FilterModal = (props: any) => {
       <Table>
         <TableBody>
           <StyledModalTableRow>
-            {filtersFields.map((field: string) => (
+            {filtersFieldsUtils.map((field: string) => (
               <EditingCell
                 field={field}
                 values={filters}

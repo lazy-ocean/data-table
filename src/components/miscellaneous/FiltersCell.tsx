@@ -3,7 +3,7 @@ import TableCell from "@material-ui/core/TableCell";
 import Chip from "@material-ui/core/Chip";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-import { editingMapping } from "../editingComponents/EditingCells";
+import { editingMapping } from "../utils";
 
 const StyledCell = withStyles(() => ({
   root: {

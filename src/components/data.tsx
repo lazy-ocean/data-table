@@ -30,7 +30,7 @@ export interface Data {
   VALUE_2: number;
   VALUE_3: number;
   UPDATED_BY: string;
-  UPDATE_TIMESTAMP: Date;
+  UPDATE_TIMESTAMP: string;
 }
 
 export interface Config {
@@ -47,7 +47,11 @@ const DATA_URL = "https://run.mocky.io/v3/6f15e3ad-bf04-4940-9b81-0f14fac8ebf2";
 const CONFIG_URL =
   "https://run.mocky.io/v3/9700b81e-1edd-49b8-8160-736b24a989a7";
 
-const formatDate = (dateString: string) => new Date(dateString.slice(0, -7));
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString.slice(0, -7));
+  return `${date.toLocaleDateString()} 
+        ${date.toLocaleTimeString()}`;
+};
 
 export const getRows = async (): Promise<Data[]> => {
   const response = await axios.get(DATA_URL);

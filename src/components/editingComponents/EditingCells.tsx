@@ -7,42 +7,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import DateFnsUtils from "@date-io/date-fns";
 import { theme, useStyles } from "../styled";
-import { Source } from "../data";
-
-export const editingMapping: any = {
-  DESCRIPTION: {
-    placeholder: "Lorem ipsum",
-    inputType: "TEXT",
-    label: "Item description:",
-    dataType: "text",
-  },
-  SOURCE_NM: {
-    inputType: "LIST",
-    label: "Source:",
-    source: Object.values(Source),
-  },
-  CLIENT_NM: {
-    inputType: "AUTOCOMPLETE",
-    label: "Client name:",
-    placeholder: "KOG",
-  },
-  TERMINATION_DT: {
-    inputType: "DATE",
-    label: "Termination date:",
-  },
-  VALUE_3: {
-    placeholder: "0 - 100000000",
-    inputType: "TEXT",
-    label: "Max range:",
-    dataType: "number",
-  },
-  defaultValue: {
-    placeholder: null,
-    inputType: null,
-    label: null,
-    dataType: null,
-  },
-};
+import { editingMapping } from "../utils";
 
 const EditedCell = (props: any) => {
   const {
@@ -140,7 +105,6 @@ const EditedCell = (props: any) => {
       input = row[field].toString();
       break;
   }
-
   return (
     <TableCell align={displayType === "NUMERIC" ? "right" : "left"}>
       {view === "form" && (

@@ -3,15 +3,12 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import _ from "lodash";
-import {
-  StyledTableRow,
-  StyledRedCell,
-  StyledYellowCell,
-  StyledEditButton,
-} from "../styled";
+import { StyledTableRow, StyledEditButton } from "../styled";
 import EditingRow from "../editingComponents/EditingRow";
 import { TypographyNoFilters } from "../miscellaneous/typography";
 import Spinner from "../miscellaneous/Spinner";
+import ConditionalCell from "./ConditionalCell";
+import { conditionalCellsUtils } from "../utils";
 
 const stableSort = (array: any[], orderBy: string, order: string): any[] => {
   // @ts-ignore
@@ -71,53 +68,34 @@ const TableBodyC = (props: any) => {
       {rows.length ? (
         stableSort(rows, orderBy, order)
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((row) => {
-            const isItemSelected = selected.indexOf(row.id) !== -1;
-            return edited !== row.id ? (
+          .map((row) =>
+            edited !== row.id ? (
               <StyledTableRow
                 key={row.id}
                 selected={selected.indexOf(row.id) !== -1}
               >
                 <TableCell padding="checkbox" key={`checkbox-${row.id}`}>
                   <Checkbox
-                    checked={isItemSelected}
+                    checked={selected.indexOf(row.id) !== -1}
                     onClick={() => handleSelect(row.id)}
                   />
                 </TableCell>
                 {(columnsInfo as Array<{ field: string; type: string }>).map(
-                  ({ field, type }) => {
-                    if (field === "VALUE_1" && row[field] > 2000) {
-                      return row[field] < 3000 ? (
-                        <StyledYellowCell
-                          key={`${field}-${row.id}`}
-                          align="right"
-                        >
-                          {row[field]}
-                        </StyledYellowCell>
-                      ) : (
-                        <StyledRedCell key={`${field}-${row.id}`} align="right">
-                          {row[field]}
-                        </StyledRedCell>
-                      );
-                    }
-                    if (field === "UPDATE_TIMESTAMP") {
-                      /* temporary fix */
-                      return (
-                        <TableCell key={`${field}-${row.id}`}>
-                          {row[field].toLocaleDateString()}{" "}
-                          {row[field].toLocaleTimeString()}
-                        </TableCell>
-                      );
-                    }
-                    return (
+                  ({ field, type }) =>
+                    Object.keys(conditionalCellsUtils).includes(field) ? (
+                      <ConditionalCell
+                        value={row[field]}
+                        id={row.id}
+                        field={field}
+                      />
+                    ) : (
                       <TableCell
                         key={`${field}-${row.id}`}
                         align={type === "NUMERIC" ? "right" : "left"}
                       >
                         {row[field]}
                       </TableCell>
-                    );
-                  }
+                    )
                 )}
                 <TableCell key={`edit-${row.id}`} padding="checkbox">
                   <StyledEditButton
@@ -138,8 +116,8 @@ const TableBodyC = (props: any) => {
                 clients={clients}
                 key={row.id}
               />
-            );
-          })
+            )
+          )
       ) : activeFilter ? (
         <TypographyNoFilters />
       ) : (
