@@ -9,7 +9,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { theme, useStyles } from "../styled";
 import { Source } from "../data";
 
-const editingMapping: any = {
+export const editingMapping: any = {
   DESCRIPTION: {
     placeholder: "Lorem ipsum",
     inputType: "TEXT",
@@ -28,12 +28,12 @@ const editingMapping: any = {
   },
   TERMINATION_DT: {
     inputType: "DATE",
-    label: "Termination date",
+    label: "Termination date:",
   },
   VALUE_3: {
     placeholder: "0 - 100000000",
     inputType: "TEXT",
-    label: "Max range",
+    label: "Max range:",
     dataType: "number",
   },
   defaultValue: {

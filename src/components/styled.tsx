@@ -103,6 +103,11 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiChip: {
+      root: {
+        marginLeft: "10px",
+      },
+    },
   },
 });
 
@@ -141,7 +146,7 @@ export const StyledRedCell = withStyles(() => ({
 export const StyledFooterCell = withStyles(() => ({
   root: {
     borderBottom: "none",
-    padding: "8px",
+    marginLeft: "auto",
   },
 }))(TableCell);
 
