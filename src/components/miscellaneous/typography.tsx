@@ -32,3 +32,9 @@ export const TypographyNoFilters = () => (
     </TableCell>
   </TableRow>
 );
+
+export const TypographyError = () => (
+  <Typography variant="h3">
+    Something went wrong. Please try reloading the page
+  </Typography>
+);

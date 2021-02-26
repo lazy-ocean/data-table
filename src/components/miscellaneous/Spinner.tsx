@@ -1,14 +1,6 @@
 import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 
-const Spinner = () => (
-  <TableRow>
-    <TableCell colSpan={13}>
-      <CircularProgress size={50} />
-    </TableCell>
-  </TableRow>
-);
+const Spinner = () => <CircularProgress size={100} />;
 
 export default Spinner;

@@ -6,7 +6,6 @@ import _ from "lodash";
 import { StyledTableRow, StyledEditButton } from "../styled";
 import EditingRow from "../editingComponents/EditingRow";
 import { TypographyNoFilters } from "../miscellaneous/typography";
-import Spinner from "../miscellaneous/Spinner";
 import ConditionalCell from "./ConditionalCell";
 import { conditionalCellsUtils } from "../utils";
 
@@ -65,64 +64,60 @@ const TableBodyC = (props: any) => {
 
   return (
     <TableBody>
-      {rows.length ? (
-        stableSort(rows, orderBy, order)
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((row) =>
-            edited !== row.id ? (
-              <StyledTableRow
-                key={row.id}
-                selected={selected.indexOf(row.id) !== -1}
-              >
-                <TableCell padding="checkbox" key={`checkbox-${row.id}`}>
-                  <Checkbox
-                    checked={selected.indexOf(row.id) !== -1}
-                    onClick={() => handleSelect(row.id)}
-                  />
-                </TableCell>
-                {(columnsInfo as Array<{ field: string; type: string }>).map(
-                  ({ field, type }) =>
-                    Object.keys(conditionalCellsUtils).includes(field) ? (
-                      <ConditionalCell
-                        value={row[field]}
-                        id={row.id}
-                        field={field}
-                      />
-                    ) : (
-                      <TableCell
-                        key={`${field}-${row.id}`}
-                        align={type === "NUMERIC" ? "right" : "left"}
-                      >
-                        {row[field]}
-                      </TableCell>
-                    )
-                )}
-                <TableCell key={`edit-${row.id}`} padding="checkbox">
-                  <StyledEditButton
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setEdited(row.id)}
-                    disabled={edited !== false && edited !== row.id}
-                  >
-                    Edit
-                  </StyledEditButton>
-                </TableCell>
-              </StyledTableRow>
-            ) : (
-              <EditingRow
-                row={row}
-                columnsInfo={columnsInfo}
-                saveData={(data: any) => handleEditing(data)}
-                clients={clients}
-                key={row.id}
-              />
+      {rows.length
+        ? stableSort(rows, orderBy, order)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) =>
+              edited !== row.id ? (
+                <StyledTableRow
+                  key={row.id}
+                  selected={selected.indexOf(row.id) !== -1}
+                >
+                  <TableCell padding="checkbox" key={`checkbox-${row.id}`}>
+                    <Checkbox
+                      checked={selected.indexOf(row.id) !== -1}
+                      onClick={() => handleSelect(row.id)}
+                    />
+                  </TableCell>
+                  {(columnsInfo as Array<{ field: string; type: string }>).map(
+                    ({ field, type }) =>
+                      Object.keys(conditionalCellsUtils).includes(field) ? (
+                        <ConditionalCell
+                          value={row[field]}
+                          id={row.id}
+                          field={field}
+                        />
+                      ) : (
+                        <TableCell
+                          key={`${field}-${row.id}`}
+                          align={type === "NUMERIC" ? "right" : "left"}
+                        >
+                          {row[field]}
+                        </TableCell>
+                      )
+                  )}
+                  <TableCell key={`edit-${row.id}`} padding="checkbox">
+                    <StyledEditButton
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => setEdited(row.id)}
+                      disabled={edited !== false && edited !== row.id}
+                    >
+                      Edit
+                    </StyledEditButton>
+                  </TableCell>
+                </StyledTableRow>
+              ) : (
+                <EditingRow
+                  row={row}
+                  columnsInfo={columnsInfo}
+                  saveData={(data: any) => handleEditing(data)}
+                  clients={clients}
+                  key={row.id}
+                />
+              )
             )
-          )
-      ) : activeFilter ? (
-        <TypographyNoFilters />
-      ) : (
-        <Spinner />
-      )}
+        : activeFilter && <TypographyNoFilters />}
     </TableBody>
   );
 };

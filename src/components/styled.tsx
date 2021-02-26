@@ -88,7 +88,7 @@ export const theme = createMuiTheme({
     },
     MuiCircularProgress: {
       root: {
-        margin: "0 50%",
+        margin: "10% 50%",
       },
     },
     MuiTableContainer: {
