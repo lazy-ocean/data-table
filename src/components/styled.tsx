@@ -48,9 +48,10 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    h5: {
+    h3: {
       textAlign: "center",
       margin: "30px",
+      fontSize: "20px",
     },
   },
   overrides: {
@@ -102,6 +103,11 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiChip: {
+      root: {
+        marginLeft: "10px",
+      },
+    },
   },
 });
 
@@ -140,7 +146,7 @@ export const StyledRedCell = withStyles(() => ({
 export const StyledFooterCell = withStyles(() => ({
   root: {
     borderBottom: "none",
-    padding: "8px",
+    marginLeft: "auto",
   },
 }))(TableCell);
 

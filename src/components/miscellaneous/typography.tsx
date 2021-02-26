@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 
 const Cell = withStyles(() => ({
   root: {
-    flexGrow: 1,
     borderBottom: "none",
   },
 }))(TableCell);
@@ -15,11 +14,13 @@ export const TypographySelected = (props: { selected: any[] }) => {
   const { selected } = props;
   return (
     <Cell align="left">
-      {selected.length
-        ? selected.length === 1
-          ? `1 item selected`
-          : `${selected.length} items selected`
-        : ""}
+      <Typography variant="subtitle1">
+        {selected.length
+          ? selected.length === 1
+            ? `1 item selected`
+            : `${selected.length} items selected`
+          : ""}
+      </Typography>
     </Cell>
   );
 };
@@ -27,7 +28,7 @@ export const TypographySelected = (props: { selected: any[] }) => {
 export const TypographyNoFilters = () => (
   <TableRow>
     <TableCell colSpan={13}>
-      <Typography variant="h5">No items matching set filters</Typography>
+      <Typography variant="h3">No items matching set filters</Typography>
     </TableCell>
   </TableRow>
 );

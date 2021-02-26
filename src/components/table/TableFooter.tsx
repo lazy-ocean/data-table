@@ -7,6 +7,15 @@ import TableRow from "@material-ui/core/TableRow";
 import { TypographySelected } from "../miscellaneous/typography";
 import { StyledFilterButton, StyledFooterCell } from "../styled";
 import FilterModal from "../miscellaneous/Modal";
+import FiltersCell from "../miscellaneous/FiltersCell";
+
+const filterRow = {
+  DESCRIPTION: null,
+  SOURCE_NM: null,
+  CLIENT_NM: null,
+  TERMINATION_DT: null,
+  VALUE_3: null,
+};
 
 const TableFooterC = (props: any) => {
   const {
@@ -25,6 +34,7 @@ const TableFooterC = (props: any) => {
   } = props;
 
   const [filterModal, openFilterModal] = React.useState<boolean>(false);
+  const [filters, setFilters] = React.useState<any>(filterRow);
 
   const handleModalOpen = () => {
     openFilterModal(true);
@@ -32,11 +42,10 @@ const TableFooterC = (props: any) => {
 
   const handleModalClose = () => {
     openFilterModal(false);
-    toggleFilter(false);
   };
 
   const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
+    event: React.MouseEvent<HTMLButtonElement> | null,
     pageNum: number
   ) => {
     setPage(pageNum);
@@ -48,31 +57,33 @@ const TableFooterC = (props: any) => {
     setPage(0);
   };
 
-  const handleFiltering = (filterData: any) => {
-    const criteria = Object.keys(filterData).filter((key) => filterData[key]);
+  const handleFiltering = () => {
+    const criteria = Object.keys(filters).filter((key) => filters[key]);
     const newData = rows.filter((row: any) =>
       criteria.every((item) =>
         item === "DESCRIPTION"
-          ? row[item].toLowerCase().includes(filterData[item].toLowerCase())
-          : filterData[item] === row[item]
+          ? row[item].toLowerCase().includes(filters[item].toLowerCase())
+          : filters[item] === row[item]
       )
     );
     setRowsData(newData);
     openFilterModal(false);
     toggleFilter(true);
   };
-
   return (
     <Table>
       <TableFooter>
         <FilterModal
           clients={clients}
           open={filterModal}
+          filters={filters}
+          setFilters={setFilters}
           onClose={handleModalClose}
-          filterData={(data: any) => handleFiltering(data)}
+          filterData={handleFiltering}
         />
-        <TableRow style={{ display: "flex" }}>
-          <TypographySelected selected={selected} />
+        <TableRow style={{ display: "flex", alignItems: "center" }}>
+          {selected.length > 0 && <TypographySelected selected={selected} />}
+          {activeFilter && <FiltersCell filters={filters} />}
           <StyledFooterCell>
             <StyledFilterButton
               variant="contained"
@@ -91,6 +102,7 @@ const TableFooterC = (props: any) => {
                   Promise.resolve(getRows())
                     .then((v) => setRowsData(v))
                     .then(() => toggleFilter(false))
+                    .then(() => setFilters(filterRow))
                 }
               >
                 Clear filters

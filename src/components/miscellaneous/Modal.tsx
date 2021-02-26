@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -11,15 +11,15 @@ import EditingCell from "../editingComponents/EditingCells";
 import { StyledModalTableRow } from "../styled";
 
 const FilterModal = (props: any) => {
-  const row = {
-    DESCRIPTION: "",
-    SOURCE_NM: "",
-    CLIENT_NM: null,
-    TERMINATION_DT: null,
-    VALUE_3: null,
-  };
-  const { open, onClose, clients, filterData } = props;
-  const [filters, setFilters] = useState(row);
+  const {
+    open,
+    onClose,
+    clients,
+    filterData,
+    filters,
+    setFilters,
+    row,
+  } = props;
   const filtersFields = [
     "DESCRIPTION",
     "SOURCE_NM",
@@ -30,11 +30,9 @@ const FilterModal = (props: any) => {
 
   const handleClose = (arg: string) => {
     if (arg === "cancel") {
-      setFilters(row);
       onClose();
     } else {
-      setFilters(row);
-      filterData(filters);
+      filterData();
     }
   };
 
@@ -86,7 +84,11 @@ const FilterModal = (props: any) => {
         <Button onClick={() => handleClose("cancel")} color="primary">
           Cancel
         </Button>
-        <Button onClick={() => handleClose("save")} color="primary">
+        <Button
+          onClick={() => handleClose("save")}
+          color="primary"
+          type="submit"
+        >
           Filter
         </Button>
       </DialogActions>
