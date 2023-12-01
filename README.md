@@ -4,8 +4,9 @@ Test assignment for Frontend Developer position. The task was to build a data gr
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Link
-
-[GitHub Pages](https://lazy-ocean.github.io/data-table/)
+~[GitHub Pages](https://lazy-ocean.github.io/data-table/)~
+> [!WARNING]
+> Not available anymore due to the API issues.
 
 ## Stack and other tools
 
